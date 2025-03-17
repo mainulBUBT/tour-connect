@@ -1,0 +1,133 @@
+.organizer-slider {
+    position: relative;
+    overflow: hidden;
+    padding: 20px 0;
+}
+
+.organizer-slider .slider-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.organizer-slider .slider-container::-webkit-scrollbar {
+    display: none;
+}
+
+.organizer-card {
+    flex: 0 0 auto;
+    width: 200px;
+    padding: 15px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.organizer-card:hover {
+    transform: translateY(-5px);
+}
+
+.organizer-card img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    object-fit: cover;
+}
+
+.organizer-card h6 {
+    margin: 0;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.organizer-card p {
+    margin: 5px 0 0;
+    color: #666;
+    font-size: 0.8rem;
+}
+
+.slider-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.9);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 1;
+}
+
+.slider-button.prev {
+    left: 10px;
+}
+
+.slider-button.next {
+    right: 10px;
+}
+
+
+/* Banner Overlay */
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
+    z-index: 1;
+}
+
+.carousel-caption {
+    z-index: 2;
+    bottom: 2rem;
+    text-align: left;
+    max-width: 80%;
+}
+
+.carousel-indicators {
+    z-index: 3;
+}
+
+.carousel-indicators [data-bs-target] {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.5);
+    border: 2px solid rgba(255,255,255,0.8);
+}
+
+.carousel-indicators .active {
+    background-color: #fff;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    z-index: 3;
+    width: 15%;
+    opacity: 0.8;
+}
+
+.carousel-item {
+    position: relative;
+}
+
+.carousel-item img {
+    transition: transform 0.3s ease-in-out;
+}
+
+.carousel-item.active img {
+    transform: scale(1.05);
+}

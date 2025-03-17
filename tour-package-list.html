@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#003554">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TourConnect">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
+    <title>TourConnect - Tour Packages</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/colors.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/slider.css" rel="stylesheet">
+    <link href="css/popular-packages.css" rel="stylesheet">
+    <link href="css/mobile-app.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom JavaScript -->
+    <script src="js/filters.js" defer></script>
+    <script src="js/pwa.js" defer></script>
+    <script src="js/favorites.js" defer></script>
+    <script src="js/filters.js" defer></script>
+    <script src="js/pwa.js" defer></script>
+    <script src="js/favorites.js" defer></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            padding-bottom: 80px; /* Increased space for bottom navigation */
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            background-color: #f8f9fa;
+        }
+        
+        /* Mobile App-like Header */
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background-image: linear-gradient(to right, var(--primary), var(--primary-dark));
+            padding: 0.8rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        /* App Logo */
+        .app-logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .app-logo img {
+            height: 32px;
+            width: 32px;
+            margin-right: 8px;
+        }
+        
+        .app-logo-text {
+            color: var(--text-light);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+        
+        /* Header Icon Buttons */
+        .header-icon-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .header-icon-btn:active {
+            transform: scale(0.9);
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        /* Notification Badge Styling */
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--secondary);
+            color: white;
+            font-size: 0.65rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            border: 2px solid var(--primary);
+        }
+        
+        /* Bottom Navigation */
+        .mobile-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: white;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            padding: 12px 0 8px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            width: 100%;
+        }
+        
+        .mobile-bottom-nav .nav-item {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .mobile-bottom-nav .nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-dark);
+            font-size: 0.7rem;
+            padding: 5px;
+        }
+        
+        .mobile-bottom-nav .nav-link i {
+            font-size: 1.2rem;
+            margin-bottom: 3px;
+        }
+        
+        .mobile-bottom-nav .nav-link.active {
+            color: var(--primary);
+        }
+        
+        /* Status bar for iOS */
+        @supports (-webkit-touch-callout: none) {
+            .app-header {
+                padding-top: env(safe-area-inset-top);
+            }
+            
+            .mobile-bottom-nav {
+                padding-bottom: env(safe-area-inset-bottom);
+                bottom: 0;
+            }
+        }
+        
+        /* Filter section styling */
+        .filter-section {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        
+        .filter-section.sticky-top {
+            max-height: calc(100vh - 150px - 80px); /* Adjusted to account for bottom navbar */
+            overflow-y: auto;
+            scrollbar-width: thin;
+            padding-bottom: 10px; /* Add some padding at the bottom */
+            margin-bottom: 10px;
+        }
+        
+        .filter-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .filter-body {
+            padding: 15px 20px;
+        }
+        
+        .filter-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+        
+        .filter-item {
+            margin-bottom: 15px;
+        }
+        
+        .filter-label {
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+        
+        .range-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+        
+        .filter-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 0 5px 8px 0;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            background-color: #f0f0f0;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .filter-badge.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .filter-badge:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .filter-badge.active:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        /* Mobile filter toggle */
+        .mobile-filter-toggle {
+            position: fixed;
+            bottom: 90px; /* Increased to avoid overlap with bottom nav */
+            right: 20px;
+            z-index: 999;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        /* Responsive adjustments for mobile */
+        @media (max-width: 576px) {
+            .section-title {
+                font-size: 1.3rem;
+                margin-bottom: 1rem;
+            }
+            
+            .card-title {
+                font-size: 0.9rem;
+            }
+            
+            .card-info-icon {
+                font-size: 0.75rem;
+                margin-right: 8px;
+            }
+            
+            .card-info-icon i {
+                font-size: 0.9rem;
+            }
+            
+            .pagination .page-link {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.9rem;
+            }
+            
+            .container {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            
+            .row {
+                margin-left: -5px;
+                margin-right: -5px;
+            }
+            
+            .col-6, .col-md-6, .col-lg-4 {
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+            
+            .g-4 {
+                --bs-gutter-y: 0.75rem;
+            }
+        }
+        
+        /* Add to favorites button */
+        .add-favorite {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            color: var(--primary);
+            font-size: 1.2rem;
+            z-index: 10;
+            transition: all 0.2s ease;
+        }
+        
+        .add-favorite:active {
+            transform: scale(0.9);
+        }
+        
+        .add-favorite.active {
+            color: var(--danger);
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile App-like Header -->
+    <header class="app-header bg-primary py-3">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- Menu Button -->
+                <button class="header-icon-btn" type="button" onclick="window.history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                
+                <!-- Logo -->
+                <a href="index.html" class="app-logo">
+                    <img src="images/icons/icon-72x72.png" alt="TourConnect Logo">
+                    <h1 class="app-logo-text">TourConnect</h1>
+                </a>
+                
+                <!-- Header Icons -->
+                <div class="app-header-icons">
+                    <button class="header-icon-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Filters Section (Desktop) -->
+            <div class="col-lg-3 d-none d-lg-block">
+                <div class="filter-section sticky-top" style="top: 80px;">
+                    <div class="filter-header">
+                        <h5 class="filter-title">Filters</h5>
+                    </div>
+                    <div class="filter-body">
+                        <!-- Destination Filter -->
+                        <div class="filter-item">
+                            <div class="filter-label">Destination</div>
+                            <select class="form-select form-select-sm">
+                                <option value="">Any Destination</option>
+                                <option value="maldives">Maldives</option>
+                                <option value="switzerland">Switzerland</option>
+                                <option value="japan">Japan</option>
+                                <option value="uae">UAE</option>
+                                <option value="thailand">Thailand</option>
+                                <option value="france">France</option>
+                                <option value="italy">Italy</option>
+                                <option value="spain">Spain</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Budget Range Filter -->
+                        <div class="filter-item">
+                            <div class="filter-label">Budget Range</div>
+                            <input type="range" class="form-range" min="500" max="5000" step="100" value="2500">
+                            <div class="range-values">
+                                <span>$500</span>
+                                <span>$5000</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Duration Filter -->
+                        <div class="filter-item">
+                            <div class="filter-label">Duration</div>
+                            <div>
+                                <span class="filter-badge" data-value="1-3">1-3 Days</span>
+                                <span class="filter-badge" data-value="4-7">4-7 Days</span>
+                                <span class="filter-badge" data-value="8-14">8-14 Days</span>
+                                <span class="filter-badge" data-value="15+">15+ Days</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Group Size Filter -->
+                        <div class="filter-item">
+                            <div class="filter-label">Group Size</div>
+                            <div>
+                                <span class="filter-badge" data-value="1-2">1-2 People</span>
+                                <span class="filter-badge" data-value="3-5">3-5 People</span>
+                                <span class="filter-badge" data-value="6-10">6-10 People</span>
+                                <span class="filter-badge" data-value="10+">10+ People</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Tour Type Filter -->
+                        <div class="filter-item">
+                            <div class="filter-label">Tour Type</div>
+                            <div>
+                                <span class="filter-badge" data-value="adventure">Adventure</span>
+                                <span class="filter-badge" data-value="cultural">Cultural</span>
+                                <span class="filter-badge" data-value="beach">Beach</span>
+                                <span class="filter-badge" data-value="city">City</span>
+                                <span class="filter-badge" data-value="food">Food</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Apply Button -->
+                        <button class="btn btn-primary w-100 mt-3">Apply Filters</button>
+                        <button class="btn btn-outline-secondary w-100 mt-2">Reset</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tour Packages Section -->
+            <div class="col-lg-9">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="w-100 text-center">
+                        <h2 class="section-title mb-0">All Tour Packages</h2>
+                    </div>
+                    <div class="d-none d-md-block">
+                        <select class="form-select form-select-sm">
+                            <option value="recommended">Recommended</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="duration-short">Duration: Shortest</option>
+                            <option value="duration-long">Duration: Longest</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Tour Cards -->
+                <div class="row g-4">
+                    <!-- Package Card 2 -->
+                    <div class="col-6 col-md-6 col-lg-4">
+                        <div class="card h-100">
+                            <div class="position-relative">
+                                <img src="https://images.unsplash.com/photo-1491555103944-7c647fd857e6" class="card-img-top" alt="Swiss Alps">
+                                <div class="card-price-overlay">$2,499</div>
+                                <button class="add-favorite" data-id="pkg2">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="card-body d-flex flex-column py-2">
+                                <h5 class="card-title mb-1"><a href="packages.html">Swiss Alps Adventure</a></h5>
+                                <!-- Date and Users in one row with justify-content-between -->
+                                <div class="d-flex flex-wrap mb-1 justify-content-between">
+                                    <span class="card-info-icon"><i class="far fa-calendar"></i>Sep 1-7</span>
+                                    <span class="card-info-icon"><i class="fas fa-users"></i>4-8</span>
+                                </div>
+                                <!-- Place in single row -->
+                                <div class="d-flex flex-wrap mb-1">
+                                    <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>Switzerland</span>
+                                </div>
+                                <!-- Star Rating -->
+                                <div class="d-flex align-items-center mb-1">
+                                    <div class="ratings">
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                    </div>
+                                    <span class="ms-1 small text-muted">(152 reviews)</span>
+                                </div>
+                                <!-- Organizer at the bottom -->
+                                <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-building me-2 text-primary"></i>
+                                        <span>Alpine</span>
+                                    </div>
+                                </div>
+                                <a href="packages.html" class="btn btn-primary card-btn-full mt-auto text-center">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Package Card 3 -->
+                    <div class="col-6 col-md-6 col-lg-4">
+                        <div class="card h-100">
+                            <div class="position-relative">
+                                <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e" class="card-img-top" alt="Tokyo City">
+                                <div class="card-price-overlay">$3,299</div>
+                                <button class="add-favorite" data-id="pkg3">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="card-body d-flex flex-column py-2">
+                                <h5 class="card-title mb-1"><a href="packages.html">Tokyo Cultural Experience</a></h5>
+                                <!-- Date and Users in one row with justify-content-between -->
+                                <div class="d-flex flex-wrap mb-1 justify-content-between">
+                                    <span class="card-info-icon"><i class="far fa-calendar"></i>Oct 10-18</span>
+                                    <span class="card-info-icon"><i class="fas fa-users"></i>2-6</span>
+                                </div>
+                                <!-- Place in single row -->
+                                <div class="d-flex flex-wrap mb-1">
+                                    <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>Japan</span>
+                                </div>
+                                <!-- Star Rating -->
+                                <div class="d-flex align-items-center mb-1">
+                                    <div class="ratings">
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="far fa-star text-warning"></i>
+                                    </div>
+                                    <span class="ms-1 small text-muted">(96 reviews)</span>
+                                </div>
+                                <!-- Organizer at the bottom -->
+                                <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-building me-2 text-primary"></i>
+                                        <span>Cultural</span>
+                                    </div>
+                                </div>
+                                <a href="packages.html" class="btn btn-primary card-btn-full mt-auto text-center">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Package Card 4 -->
+                    <div class="col-6 col-md-6 col-lg-4">
+                        <div class="card h-100">
+                            <div class="position-relative">
+                                <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c" class="card-img-top" alt="Dubai Skyline">
+                                <div class="card-price-overlay">$2,899</div>
+                                <button class="add-favorite" data-id="pkg4">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="card-body d-flex flex-column py-2">
+                                <h5 class="card-title mb-1"><a href="packages.html">Dubai Luxury Tour</a></h5>
+                                <!-- Date and Users in one row with justify-content-between -->
+                                <div class="d-flex flex-wrap mb-1 justify-content-between">
+                                    <span class="card-info-icon"><i class="far fa-calendar"></i>Nov 5-12</span>
+                                    <span class="card-info-icon"><i class="fas fa-users"></i>2-8</span>
+                                </div>
+                                <!-- Place in single row -->
+                                <div class="d-flex flex-wrap mb-1">
+                                    <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>UAE</span>
+                                </div>
+                                <!-- Star Rating -->
+                                <div class="d-flex align-items-center mb-1">
+                                    <div class="ratings">
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                    </div>
+                                    <span class="ms-1 small text-muted">(152 reviews)</span>
+                                </div>
+                                <!-- Organizer at the bottom -->
+                                <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-building me-2 text-primary"></i>
+                                        <span>Luxury</span>
+                                    </div>
+                                </div>
+                                <a href="packages.html" class="btn btn-primary card-btn-full mt-auto text-center">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Package Card 5 -->
+                    <div class="col-6 col-md-6 col-lg-4">
+                        <div class="card h-100">
+                            <div class="position-relative">
+                                <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4" class="card-img-top" alt="Paris">
+                                <div class="card-price-overlay">$2,199</div>
+                                <button class="add-favorite" data-id="pkg5">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="card-body d-flex flex-column py-2">
+                                <h5 class="card-title mb-1"><a href="packages.html">Paris Romance Tour</a></h5>
+                                <!-- Date and Users in one row with justify-content-between -->
+                                <div class="d-flex flex-wrap mb-1 justify-content-between">
+                                    <span class="card-info-icon"><i class="far fa-calendar"></i>Dec 10-16</span>
+                                    <span class="card-info-icon"><i class="fas fa-users"></i>2-4</span>
+                                </div>
+                                <!-- Place in single row -->
+                                <div class="d-flex flex-wrap mb-1">
+                                    <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>France</span>
+                                </div>
+                                <!-- Star Rating -->
+                                <div class="d-flex align-items-center mb-1">
+                                    <div class="ratings">
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="far fa-star text-warning"></i>
+                                    </div>
+                                    <span class="ms-1 small text-muted">(112 reviews)</span>
+                                </div>
+                                <!-- Organizer at the bottom -->
+                                <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-building me-2 text-primary"></i>
+                                        <span>Romantic</span>
+                                    </div>
+                                </div>
+                                <a href="packages.html" class="btn btn-primary card-btn-full mt-auto text-center">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Package Card 6 -->
+                    <div class="col-6 col-md-6 col-lg-4">
+                        <div class="card h-100">
+                            <div class="position-relative">
+                                <img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963" class="card-img-top" alt="Italy">
+                                <div class="card-price-overlay">$2,599</div>
+                                <button class="add-favorite" data-id="pkg6">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="card-body d-flex flex-column py-2">
+                                <h5 class="card-title mb-1"><a href="packages.html">Italian Food & Culture</a></h5>
+                                <!-- Date and Users in one row with justify-content-between -->
+                                <div class="d-flex flex-wrap mb-1 justify-content-between">
+                                    <span class="card-info-icon"><i class="far fa-calendar"></i>Jan 15-22</span>
+                                    <span class="card-info-icon"><i class="fas fa-users"></i>4-10</span>
+                                </div>
+                                <!-- Place in single row -->
+                                <div class="d-flex flex-wrap mb-1">
+                                    <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>Italy</span>
+                                </div>
+                                <!-- Star Rating -->
+                                <div class="d-flex align-items-center mb-1">
+                                    <div class="ratings">
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star-half-alt text-warning"></i>
+                                        <i class="far fa-star text-warning"></i>
+                                    </div>
+                                    <span class="ms-1 small text-muted">(87 reviews)</span>
+                                </div>
+                                <!-- Organizer at the bottom -->
+                                <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-building me-2 text-primary"></i>
+                                        <span>Culinary</span>
+                                    </div>
+                                </div>
+                                <a href="packages.html" class="btn btn-primary card-btn-full mt-auto text-center">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Filter Modal -->
+    <div class="modal fade" id="mobileFilterModal" tabindex="-1" aria-labelledby="mobileFilterModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mobileFilterModalLabel">Filter Tour Packages</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Destination Filter -->
+                    <div class="filter-item">
+                        <div class="filter-label">Destination</div>
+                        <select class="form-select form-select-sm">
+                            <option value="">Any Destination</option>
+                            <option value="maldives">Maldives</option>
+                            <option value="switzerland">Switzerland</option>
+                            <option value="japan">Japan</option>
+                            <option value="uae">UAE</option>
+                            <option value="thailand">Thailand</option>
+                            <option value="france">France</option>
+                            <option value="italy">Italy</option>
+                            <option value="spain">Spain</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Budget Range Filter -->
+                    <div class="filter-item">
+                        <div class="filter-label">Budget Range</div>
+                        <input type="range" class="form-range" min="500" max="5000" step="100" value="2500">
+                        <div class="range-values">
+                            <span>$500</span>
+                            <span>$5000</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Duration Filter -->
+                    <div class="filter-item">
+                        <div class="filter-label">Duration</div>
+                        <div>
+                            <span class="filter-badge" data-value="1-3">1-3 Days</span>
+                            <span class="filter-badge" data-value="4-7">4-7 Days</span>
+                            <span class="filter-badge" data-value="8-14">8-14 Days</span>
+                            <span class="filter-badge" data-value="15+">15+ Days</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Group Size Filter -->
+                    <div class="filter-item">
+                        <div class="filter-label">Group Size</div>
+                        <div>
+                            <span class="filter-badge" data-value="1-2">1-2 People</span>
+                            <span class="filter-badge" data-value="3-5">3-5 People</span>
+                            <span class="filter-badge" data-value="6-10">6-10 People</span>
+                            <span class="filter-badge" data-value="10+">10+ People</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Tour Type Filter -->
+                    <div class="filter-item">
+                        <div class="filter-label">Tour Type</div>
+                        <div>
+                            <span class="filter-badge" data-value="adventure">Adventure</span>
+                            <span class="filter-badge" data-value="cultural">Cultural</span>
+                            <span class="filter-badge" data-value="beach">Beach</span>
+                            <span class="filter-badge" data-value="city">City</span>
+                            <span class="filter-badge" data-value="food">Food</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Apply Filters</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <nav class="mt-4 mb-3" aria-label="Tour packages pagination">
+        <ul class="pagination justify-content-center pagination-sm flex-wrap">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+            </li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <style>
+        .pagination {
+            gap: 5px;
+        }
+        .page-link {
+            border-radius: 8px;
+            border: 1px solid rgba(0,0,0,0.1);
+            color: var(--text-dark);
+            padding: 8px 12px;
+            min-width: 36px;
+            text-align: center;
+        }
+        .page-link:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary-light);
+        }
+        .page-item.active .page-link {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        .page-item.disabled .page-link {
+            background-color: #f8f9fa;
+            color: var(--text-muted);
+        }
+    </style>
+
+    <!-- Mobile Filter Toggle Button -->
+    <button class="mobile-filter-toggle d-lg-none" type="button" data-bs-toggle="modal" data-bs-target="#mobileFilterModal">
+        <i class="fas fa-sliders-h"></i>
+    </button>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav d-flex justify-content-between align-items-center">
+        <a href="index.html" class="nav-item nav-link">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="tour-package-list.html" class="nav-item nav-link active">
+            <i class="fas fa-map-marked-alt"></i>
+            <span>Tours</span>
+        </a>
+        <a href="#" class="nav-item nav-link">
+            <i class="fas fa-search"></i>
+            <span>Search</span>
+        </a>
+        <a href="favorites.html" class="nav-item nav-link">
+            <i class="fas fa-heart"></i>
+            <span>Favorites</span>
+        </a>
+        <a href="profile.html" class="nav-item nav-link">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- JavaScript for Filter Badges -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle active class on filter badges
+            const filterBadges = document.querySelectorAll('.filter-badge');
+            filterBadges.forEach(badge => {
+                badge.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

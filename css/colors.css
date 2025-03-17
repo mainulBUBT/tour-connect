@@ -1,0 +1,80 @@
+:root {
+    --primary: #003554;
+    --primary-dark: #002233;
+    --primary-light: #004d77;
+    --secondary: #BFA181;
+    --secondary-light: #D4BFA6;
+    --background-light: #F5F5F0;
+    --text-dark: #2C3E50;
+    --text-light: #ECF0F1;
+}
+
+/* Override Bootstrap classes */
+.bg-primary {
+    background-color: var(--primary) !important;
+}
+
+.btn-primary {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark) !important;
+    border-color: var(--primary-dark) !important;
+}
+
+.btn-outline-primary {
+    color: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary) !important;
+    color: var(--text-light) !important;
+}
+
+.text-primary {
+    color: var(--primary) !important;
+}
+
+/* Custom background colors */
+.bg-light {
+    background-color: var(--background-light) !important;
+}
+
+/* Category cards */
+.category-card {
+    transition: all 0.3s ease;
+}
+
+.category-card:hover {
+    background-color: var(--primary-light) !important;
+    color: var(--text-light);
+}
+
+.category-card:hover i,
+.category-card:hover h5 {
+    color: var(--text-light) !important;
+}
+
+/* Card badges */
+.badge.bg-primary {
+    background-color: var(--secondary) !important;
+}
+
+/* Links */
+a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--primary-dark);
+}
+
+/* Footer */
+.bg-dark {
+    background-color: var(--primary-dark) !important;
+}

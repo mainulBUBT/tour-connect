@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#003554">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TourConnect">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
+    <title>TourConnect - Find Your Perfect Tour</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/colors.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/slider.css" rel="stylesheet">
+    <link href="css/popular-packages.css" rel="stylesheet">
+    <link href="css/center-carousel.css" rel="stylesheet">
+    <link href="css/organizers.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom JavaScript -->
+    <script src="js/filters.js" defer></script>
+    <script src="js/pwa.js" defer></script>
+    <script src="js/center-carousel.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchToggleBtn = document.getElementById('searchToggleBtn');
+            const searchContainer = document.getElementById('searchContainer');
+
+            searchToggleBtn.addEventListener('click', function() {
+                searchContainer.style.display = searchContainer.style.display === 'none' ? 'block' : 'none';
+            });
+        });
+    </script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            padding-bottom: 70px; /* Space for bottom navigation */
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Mobile App-like Header */
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background-image: linear-gradient(to right, var(--primary), var(--primary-dark));
+            padding: 0.8rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        /* App Logo */
+        .app-logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .app-logo img {
+            height: 32px;
+            width: 32px;
+            margin-right: 8px;
+        }
+        
+        .app-logo-text {
+            color: var(--text-light);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+        
+        /* Header Icon Buttons */
+        .header-icon-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .header-icon-btn:active {
+            transform: scale(0.9);
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        /* Search Bar */
+        .app-search {
+            position: relative;
+            flex-grow: 1;
+            margin: 0 15px;
+            display: none; /* Hide on mobile */
+        }
+        
+        .app-search-input {
+            width: 100%;
+            padding: 8px 15px 8px 40px;
+            border-radius: 20px;
+            border: none;
+            background-color: rgba(255,255,255,0.15);
+            color: var(--text-light);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .app-search-input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .app-search-input:focus {
+            background-color: rgba(255,255,255,0.25);
+            outline: none;
+        }
+        
+        .app-search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+        
+        /* Notification Badge */
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--secondary);
+            color: white;
+            font-size: 0.65rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        /* App Header Icons */
+        .app-header-icons {
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Bottom Navigation */
+        .mobile-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            padding: 10px 0 5px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+        
+        .mobile-bottom-nav .nav-item {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .mobile-bottom-nav .nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-dark);
+            font-size: 0.7rem;
+            padding: 5px;
+        }
+        
+        .mobile-bottom-nav .nav-link i {
+            font-size: 1.2rem;
+            margin-bottom: 3px;
+        }
+        
+        .mobile-bottom-nav .nav-link.active {
+            color: var(--primary);
+        }
+        
+        /* Status bar for iOS */
+        @supports (-webkit-touch-callout: none) {
+            .app-header {
+                padding-top: env(safe-area-inset-top);
+            }
+            
+            .mobile-bottom-nav {
+                padding-bottom: env(safe-area-inset-bottom);
+                bottom: 0;
+            }
+        }
+        
+        /* App-like Category Cards */
+        .app-category-card {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            height: 100%;
+        }
+        
+        .app-category-icon {
+            height: 50px;
+            width: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 auto 8px;
+            background-color: rgba(16, 64, 59, 0.1);
+        }
+        
+        /* Improved responsive header styling */
+        @media (min-width: 768px) {
+            .app-header {
+                padding: 1rem 0;
+            }
+            
+            .app-logo img {
+                height: 36px;
+                width: 36px;
+            }
+            
+            .app-logo-text {
+                font-size: 1.4rem;
+            }
+            
+            .header-icon-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 1.3rem;
+            }
+        }
+        
+        @media (min-width: 992px) {
+            .app-header {
+                padding: 1.2rem 0;
+            }
+            
+            .app-logo img {
+                height: 40px;
+                width: 40px;
+            }
+            
+            .app-logo-text {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .app-category-icon {
+                height: 40px;
+                width: 40px;
+                margin-bottom: 5px;
+            }
+            
+            .app-category-card {
+                padding: 8px !important;
+            }
+            
+            .app-category-card h5 {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile App-like Header -->
+    <header class="app-header bg-primary py-3">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- Menu Button -->
+                <button class="header-icon-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#sideDrawer" aria-controls="sideDrawer">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <!-- Logo -->
+                <a href="index.html" class="app-logo">
+                    <img src="images/icons/icon-72x72.png" alt="TourConnect Logo">
+                    <h1 class="app-logo-text">TourConnect</h1>
+                </a>
+                
+                <!-- Search Bar Removed as requested -->
+                
+                <!-- Header Icons -->
+                <div class="app-header-icons">
+                    <button class="header-icon-btn" id="searchToggleBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="header-icon-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Search Bar Container -->
+            <div class="app-search mt-2" id="searchContainer" style="display: none;">
+                <i class="fas fa-search app-search-icon"></i>
+                <input type="text" class="app-search-input" placeholder="Search tours and destinations...">
+            </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Center Carousel Banner Section -->
+    <div class="center-carousel-container">
+        <div class="center-carousel">
+            <div class="center-carousel-track">
+                <div class="center-carousel-slide active">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Beach Tour">
+                    <div class="center-carousel-caption">
+                        <h3>Exotic Beach Tours</h3>
+                        <p>Discover paradise on earth</p>
+                        <a href="#" class="btn btn-light btn-sm">Explore Now</a>
+                    </div>
+                </div>
+                <div class="center-carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b" alt="Mountain Tour">
+                    <div class="center-carousel-caption">
+                        <h3>Mountain Adventures</h3>
+                        <p>Experience the thrill of heights</p>
+                        <a href="#" class="btn btn-light btn-sm">Book Now</a>
+                    </div>
+                </div>
+                <div class="center-carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df" alt="City Tour">
+                    <div class="center-carousel-caption">
+                        <h3>City Explorations</h3>
+                        <p>Unveil urban mysteries</p>
+                        <a href="#" class="btn btn-light btn-sm">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="center-carousel-controls">
+                <button class="center-carousel-control prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="center-carousel-control next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div class="center-carousel-indicators">
+                <div class="center-carousel-indicator active"></div>
+                <div class="center-carousel-indicator"></div>
+                <div class="center-carousel-indicator"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Side Drawer Navigation (Mobile App Style) -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="sideDrawer" aria-labelledby="sideDrawerLabel" style="width: 80%; max-width: 350px;">
+        <div class="offcanvas-header bg-primary text-white">
+            <div class="d-flex align-items-center">
+                <img src="images/icons/icon-72x72.png" alt="App Icon" width="40" height="40" class="rounded me-2">
+                <h5 class="offcanvas-title mb-0" id="sideDrawerLabel">TourConnect</h5>
+            </div>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <div class="p-3 bg-light">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-primary text-white rounded-circle p-2 me-3">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <a href="login.html" class="text-decoration-none text-primary">Sign in</a>
+                        <p class="text-muted mb-0 small">for personalized experience</p>
+                    </div>
+                </div>
+            </div>
+            <ul class="nav flex-column py-2">
+                <li class="nav-item">
+                    <a class="nav-link active px-3 py-3" href="index.html">
+                        <i class="fas fa-home me-3 text-primary"></i>Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-3 py-3" href="packages.html">
+                        <i class="fas fa-suitcase me-3 text-primary"></i>Tour Packages
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-3 py-3" href="#">
+                        <i class="fas fa-heart me-3 text-primary"></i>Favorites
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-3 py-3" href="#">
+                        <i class="fas fa-bell me-3 text-primary"></i>Notifications
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-3 py-3" href="#">
+                        <i class="fas fa-info-circle me-3 text-primary"></i>About
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-3 py-3" href="#">
+                        <i class="fas fa-envelope me-3 text-primary"></i>Contact
+                    </a>
+                </li>
+            </ul>
+            <hr class="my-2">
+            <div class="px-3 py-2">
+                <h6 class="text-uppercase text-muted small fw-bold mb-2">Legal</h6>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 small" href="#">
+                            <i class="fas fa-file-alt me-2 text-primary"></i>Terms & Conditions
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 small" href="#">
+                            <i class="fas fa-shield-alt me-2 text-primary"></i>Privacy Policy
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories Section (App-like Design) -->
+    <section class="py-4 bg-light">
+        <div class="container">
+            <h2 class="section-title">Explore Categories</h2>
+            <div class="row g-2 text-center">
+                <div class="col-3">
+                    <div class="app-category-card bg-white p-2">
+                        <div class="app-category-icon">
+                            <i class="fas fa-umbrella-beach fs-4 text-primary"></i>
+                        </div>
+                        <h5 class="mb-0 fs-6 fw-bold">Beach</h5>
+                        <p class="small text-muted mb-0 d-none d-md-block">Relax on pristine shores</p>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="app-category-card bg-white p-2">
+                        <div class="app-category-icon">
+                            <i class="fas fa-mountain fs-4 text-primary"></i>
+                        </div>
+                        <h5 class="mb-0 fs-6 fw-bold">Adventure</h5>
+                        <p class="small text-muted mb-0 d-none d-md-block">Thrilling experiences</p>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="app-category-card bg-white p-2">
+                        <div class="app-category-icon">
+                            <i class="fas fa-utensils fs-4 text-primary"></i>
+                        </div>
+                        <h5 class="mb-0 fs-6 fw-bold">Food</h5>
+                        <p class="small text-muted mb-0 d-none d-md-block">Culinary journeys</p>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="app-category-card bg-white p-2">
+                        <div class="app-category-icon">
+                            <i class="fas fa-landmark fs-4 text-primary"></i>
+                        </div>
+                        <h5 class="mb-0 fs-6 fw-bold">Cultural</h5>
+                        <p class="small text-muted mb-0 d-none d-md-block">Heritage experiences</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tour Packages (Facebook Events Style) -->
+    <section class="py-5">
+        <div class="container">
+            <!-- Title -->
+            <h2 class="section-title mb-4 text-center">Upcoming Tours</h2>
+            
+            <!-- Tour Cards -->
+            <div class="row g-4">
+                <!-- Package Card 1 -->
+                <div class="col-6 col-md-6 col-lg-3">
+                    <div class="card h-100">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1602002418082-a4443e081dd1" class="card-img-top" alt="Maldives Beach Resort">
+                            <div class="card-price-overlay">$1,999</div>
+                        </div>
+                        <div class="card-body d-flex flex-column py-2">
+                            <h5 class="card-title mb-1"><a href="packages.html">Maldives Paradise Escape</a></h5>
+                            <!-- Date and Users in one row with justify-content-between -->
+                            <div class="d-flex flex-wrap mb-1 justify-content-between">
+                                <span class="card-info-icon"><i class="far fa-calendar"></i>Aug 15-20</span>
+                                <span class="card-info-icon"><i class="fas fa-users"></i>2-10</span>
+                            </div>
+                            <!-- Place in single row -->
+                            <div class="d-flex flex-wrap mb-1">
+                                <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>Maldives</span>
+                            </div>
+                            <!-- Organizer at the bottom -->
+                            <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-building me-2 text-primary"></i>
+                                    <span>Luxury</span>
+                                </div>
+                            </div>
+                            <a href="packages.html" class="btn btn-primary card-btn-full mt-auto text-center">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Package Card 2 -->
+                <div class="col-6 col-md-6 col-lg-3">
+                    <div class="card h-100">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1491555103944-7c647fd857e6" class="card-img-top" alt="Swiss Alps">
+                            <div class="card-price-overlay">$2,499</div>
+                        </div>
+                        <div class="card-body d-flex flex-column py-2">
+                            <h5 class="card-title mb-1"><a href="packages.html">Swiss Alps Adventure</a></h5>
+                            <!-- Date and Users in one row with justify-content-between -->
+                            <div class="d-flex flex-wrap mb-1 justify-content-between">
+                                <span class="card-info-icon"><i class="far fa-calendar"></i>Sep 1-7</span>
+                                <span class="card-info-icon"><i class="fas fa-users"></i>4-8</span>
+                            </div>
+                            <!-- Place in single row -->
+                            <div class="d-flex flex-wrap mb-1">
+                                <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>Switzerland</span>
+                            </div>
+                            <!-- Organizer at the bottom -->
+                            <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-building me-2 text-primary"></i>
+                                    <span>Alpine</span>
+                                </div>
+                            </div>
+                            <a href="packages.html" class="btn btn-primary card-btn-full mt-auto text-center">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Package Card 3 -->
+                <div class="col-6 col-md-6 col-lg-3">
+                    <div class="card h-100">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e" class="card-img-top" alt="Tokyo">
+                            <div class="card-price-overlay">$1,799</div>
+                        </div>
+                        <div class="card-body d-flex flex-column py-2">
+                            <h5 class="card-title mb-1"><a href="packages.html">Tokyo Cultural Experience</a></h5>
+                            <!-- Date and Users in one row with justify-content-between -->
+                            <div class="d-flex flex-wrap mb-1 justify-content-between">
+                                <span class="card-info-icon"><i class="far fa-calendar"></i>Oct 5-12</span>
+                                <span class="card-info-icon"><i class="fas fa-users"></i>2-6</span>
+                            </div>
+                            <!-- Place in single row -->
+                            <div class="d-flex flex-wrap mb-1">
+                                <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>Japan</span>
+                            </div>
+                            <!-- Organizer at the bottom -->
+                            <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-building me-2 text-primary"></i>
+                                    <span>Asia</span>
+                                </div>
+                            </div>
+                            <a href="packages.html" class="btn btn-primary card-btn-full mt-auto text-center">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Package Card 4 -->
+                <div class="col-6 col-md-6 col-lg-3">
+                    <div class="card h-100">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c" class="card-img-top" alt="Dubai">
+                            <div class="card-price-overlay">$1,599</div>
+                        </div>
+                        <div class="card-body d-flex flex-column py-2">
+                            <h5 class="card-title mb-1"><a href="packages.html">Dubai Desert Safari</a></h5>
+                            <!-- Date and Users in one row with justify-content-between -->
+                            <div class="d-flex flex-wrap mb-1 justify-content-between">
+                                <span class="card-info-icon"><i class="far fa-calendar"></i>Nov 1-5</span>
+                                <span class="card-info-icon"><i class="fas fa-users"></i>2-8</span>
+                            </div>
+                            <!-- Place in single row -->
+                            <div class="d-flex flex-wrap mb-1">
+                                <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>UAE</span>
+                            </div>
+                            <!-- Organizer at the bottom -->
+                            <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-building me-2 text-primary"></i>
+                                    <span>Desert</span>
+                                </div>
+                            </div>
+                            <a href="packages.html" class="btn btn-primary card-btn-full mt-auto text-center">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- View All Button Below Cards -->
+            <div class="text-center mt-4">
+                <a href="tour-package-list.html" class="btn btn-outline-primary">
+                    <i class="fas fa-th-list me-2"></i>View All Tours
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advertisement Section -->
+    <section class="py-4 bg-light">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card bg-dark text-white">
+                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" class="card-img opacity-50" alt="Summer Beach">
+                        <div class="card-img-overlay d-flex flex-column justify-content-center text-center">
+                            <h3>Summer Special Offers</h3>
+                            <p>Get up to 30% off on beach destinations</p>
+                            <a href="#" class="btn btn-light">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card bg-dark text-white">
+                        <img src="https://images.unsplash.com/photo-1519677100203-a0e668c92439" class="card-img opacity-50" alt="Mountain View">
+                        <div class="card-img-overlay d-flex flex-column justify-content-center text-center">
+                            <h3>Early Bird Discount</h3>
+                            <p>Book 3 months in advance and save 20%</p>
+                            <a href="#" class="btn btn-light">View Deals</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Packages -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="section-title text-center">Popular Packages</h2>
+            <div class="row g-4">
+                <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                    <div class="popular-package-card">
+                        <div class="row g-0 h-100">
+                            <div class="col-5 popular-package-img-container">
+                                <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4" class="popular-package-img" alt="Bali Beach Resort">
+                            </div>
+                            <div class="col-7">
+                                <div class="popular-package-body">
+                                    <h5 class="popular-package-title">Bali Beach Resort</h5>
+                                    <!-- Date and Users in one row with justify-content-between -->
+                                    <div class="d-flex flex-wrap mb-1 justify-content-between">
+                                        <span class="card-info-icon"><i class="far fa-calendar"></i>Jul 10-15</span>
+                                        <span class="card-info-icon"><i class="fas fa-users"></i>2-8</span>
+                                    </div>
+                                    <!-- Place in single row -->
+                                    <div class="d-flex flex-wrap mb-1">
+                                        <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>Bali, Indonesia</span>
+                                    </div>
+                                    <!-- Organizer at the bottom -->
+                                    <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-building me-2 text-primary"></i>
+                                            <span>Luxury Travels</span>
+                                        </div>
+                                    </div>
+                                    <div class="mt-auto d-flex justify-content-between align-items-center">
+                                        <span class="popular-package-price">$899</span>
+                                        <a href="packages.html" class="btn btn-primary btn-sm">Book Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                    <div class="popular-package-card">
+                        <div class="row g-0 h-100">
+                            <div class="col-5 popular-package-img-container">
+                                <img src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a" class="popular-package-img" alt="Paris City Break">
+                            </div>
+                            <div class="col-7">
+                                <div class="popular-package-body">
+                                    <h5 class="popular-package-title">Paris City Break</h5>
+                                    <!-- Date and Users in one row with justify-content-between -->
+                                    <div class="d-flex flex-wrap mb-1 justify-content-between">
+                                        <span class="card-info-icon"><i class="far fa-calendar"></i>Aug 5-9</span>
+                                        <span class="card-info-icon"><i class="fas fa-users"></i>2-6</span>
+                                    </div>
+                                    <!-- Place in single row -->
+                                    <div class="d-flex flex-wrap mb-1">
+                                        <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>Paris, France</span>
+                                    </div>
+                                    <!-- Organizer at the bottom -->
+                                    <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-building me-2 text-primary"></i>
+                                            <span>Europe Tours</span>
+                                        </div>
+                                    </div>
+                                    <div class="mt-auto d-flex justify-content-between align-items-center">
+                                        <span class="popular-package-price">$799</span>
+                                        <a href="packages.html" class="btn btn-primary btn-sm">Book Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                    <div class="popular-package-card">
+                        <div class="row g-0 h-100">
+                            <div class="col-5 popular-package-img-container">
+                                <img src="https://images.unsplash.com/photo-1467269204594-9661b134dd2b" class="popular-package-img" alt="Rome Adventure">
+                            </div>
+                            <div class="col-7">
+                                <div class="popular-package-body">
+                                    <h5 class="popular-package-title">Rome Adventure</h5>
+                                    <!-- Date and Users in one row with justify-content-between -->
+                                    <div class="d-flex flex-wrap mb-1 justify-content-between">
+                                        <span class="card-info-icon"><i class="far fa-calendar"></i>Sep 10-16</span>
+                                        <span class="card-info-icon"><i class="fas fa-users"></i>4-12</span>
+                                    </div>
+                                    <!-- Place in single row -->
+                                    <div class="d-flex flex-wrap mb-1">
+                                        <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>Rome, Italy</span>
+                                    </div>
+                                    <!-- Organizer at the bottom -->
+                                    <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-building me-2 text-primary"></i>
+                                            <span>Mediterranean</span>
+                                        </div>
+                                    </div>
+                                    <div class="mt-auto d-flex justify-content-between align-items-center">
+                                        <span class="popular-package-price">$999</span>
+                                        <a href="packages.html" class="btn btn-primary btn-sm">Book Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Organizers Section -->
+    <section class="organizers-section">
+        <div class="container">
+            <h2 class="section-title">Featured Tour Organizers</h2>
+            <div class="organizers-container">
+                <!-- Organizer Card 1 -->
+                <div class="organizer-card">
+                    <div class="organizer-profile">
+                        <img src="https://images.unsplash.com/photo-1594564781336-726aae077800" alt="Luxury Travels">
+                        <div class="verified-badge">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+                    <h5 class="organizer-name">Luxury Travels</h5>
+                    <p class="organizer-specialty">Premium Experiences</p>
+                    <div class="organizer-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span class="rating-value">4.5</span>
+                    </div>
+                    <div class="organizer-stats">
+                        <div class="stat-item">
+                            <span class="stat-value">42</span>
+                            <span class="stat-label">Tours</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">5k+</span>
+                            <span class="stat-label">Clients</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Organizer Card 2 -->
+                <div class="organizer-card">
+                    <div class="organizer-profile">
+                        <img src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa" alt="Alpine Tours">
+                        <div class="verified-badge">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+                    <h5 class="organizer-name">Alpine Tours</h5>
+                    <p class="organizer-specialty">Adventure Specialists</p>
+                    <div class="organizer-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <span class="rating-value">4.0</span>
+                    </div>
+                    <div class="organizer-stats">
+                        <div class="stat-item">
+                            <span class="stat-value">36</span>
+                            <span class="stat-label">Tours</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">3k+</span>
+                            <span class="stat-label">Clients</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Organizer Card 3 -->
+                <div class="organizer-card">
+                    <div class="organizer-profile">
+                        <img src="https://images.unsplash.com/photo-1528164344705-47542687000d" alt="Asia Explorers">
+                        <div class="verified-badge">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+                    <h5 class="organizer-name">Asia Explorers</h5>
+                    <p class="organizer-specialty">Cultural Journeys</p>
+                    <div class="organizer-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span class="rating-value">4.9</span>
+                    </div>
+                    <div class="organizer-stats">
+                        <div class="stat-item">
+                            <span class="stat-value">58</span>
+                            <span class="stat-label">Tours</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">7k+</span>
+                            <span class="stat-label">Clients</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Organizer Card 4 -->
+                <div class="organizer-card">
+                    <div class="organizer-profile">
+                        <img src="https://images.unsplash.com/photo-1547235001-d703406d3f17" alt="Desert Adventures">
+                        <div class="verified-badge">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+                    <h5 class="organizer-name">Desert Adventures</h5>
+                    <p class="organizer-specialty">Desert Safaris</p>
+                    <div class="organizer-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                        <span class="rating-value">3.5</span>
+                    </div>
+                    <div class="organizer-stats">
+                        <div class="stat-item">
+                            <span class="stat-value">29</span>
+                            <span class="stat-label">Tours</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">2k+</span>
+                            <span class="stat-label">Clients</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation buttons -->
+            <!-- Removing arrow navigation for cleaner mobile-friendly interface -->
+            
+        </div>
+    </section>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav d-flex justify-content-between align-items-center">
+        <a href="index.html" class="nav-item nav-link active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="tour-package-list.html" class="nav-item nav-link">
+            <i class="fas fa-map-marked-alt"></i>
+            <span>Tours</span>
+        </a>
+        <a href="#" class="nav-item nav-link">
+            <i class="fas fa-search"></i>
+            <span>Search</span>
+        </a>
+        <a href="#" class="nav-item nav-link">
+            <i class="fas fa-heart"></i>
+            <span>Favorites</span>
+        </a>
+        <a href="login.html" class="nav-item nav-link">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Organizers slider functionality - touch-friendly scrolling
+            const organizersContainer = document.querySelector('.organizers-container');
+            
+            // No navigation buttons needed - using native touch scrolling
+            // The container is already set up with scroll-behavior: smooth in CSS
+        });
+    </script>
+</body>
+</html>

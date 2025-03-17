@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#003554">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TourConnect">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
+    <title>Package Details - TourConnect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/colors.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/app-slider.css" rel="stylesheet">
+    <link href="css/mobile-app.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            padding-bottom: 70px; /* Space for bottom navigation */
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            background-color: #f8f9fa;
+        }
+        
+        /* App Cards */
+        .app-card {
+            background-color: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .app-card:active {
+            transform: scale(0.98);
+        }
+        
+        /* Timeline Styling */
+        .tour-timeline {
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .tour-timeline:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 8px;
+            width: 2px;
+            background-color: #e9ecef;
+        }
+        
+        .timeline-item {
+            position: relative;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -20px;
+            top: 15px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #dee2e6;
+            border: 2px solid #fff;
+            z-index: 1;
+        }
+        
+        .timeline-item.active .timeline-dot {
+            background-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(16, 64, 59, 0.2);
+        }
+        
+        .timeline-content {
+            background-color: #fff;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-item.active .timeline-content {
+            border-left: 3px solid var(--primary);
+        }
+        
+        /* Highlight Items */
+        .highlight-item {
+            transition: all 0.2s ease;
+        }
+        
+        .highlight-item:hover {
+            background-color: rgba(16, 64, 59, 0.05) !important;
+        }
+        
+        /* Review Styling */
+        .review-item {
+            border-left: 3px solid var(--primary);
+        }
+        
+        .smaller {
+            font-size: 0.7rem;
+        }
+        
+        /* Mobile Bottom Navigation */
+        .mobile-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            padding: 10px 0 5px;
+        }
+        
+        .mobile-bottom-nav .nav-item {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .mobile-bottom-nav .nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-dark);
+            font-size: 0.7rem;
+            padding: 5px;
+        }
+        
+        .mobile-bottom-nav .nav-link i {
+            font-size: 1.2rem;
+            margin-bottom: 3px;
+        }
+        
+        .mobile-bottom-nav .nav-link.active {
+            color: var(--primary);
+        }
+        
+        /* Status bar for iOS */
+        @supports (-webkit-touch-callout: none) {
+            .app-header {
+                padding-top: env(safe-area-inset-top);
+            }
+            
+            .mobile-bottom-nav {
+                padding-bottom: env(safe-area-inset-bottom);
+                bottom: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile App-like Header -->
+    <header class="app-header bg-primary py-3">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="index.html" class="btn text-white p-0">
+                    <i class="fas fa-arrow-left fs-4"></i>
+                </a>
+                <a class="navbar-brand text-white fs-3 mb-0 mx-auto" href="index.html">TourConnect</a>
+                <div style="width: 24px;"></div> <!-- Empty div for balance -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile App-like Image Slider -->
+    <div class="container mt-3">
+        <div class="app-slider-container">
+            <div class="app-slider">
+                <div class="app-slider-slide">
+                    <img src="https://images.unsplash.com/photo-1602002418082-a4443e081dd1" alt="Maldives Beach Resort">
+                    <div class="app-slider-caption">Discover Paradise in Maldives</div>
+                </div>
+                <div class="app-slider-slide">
+                    <img src="https://images.unsplash.com/photo-1530789253388-582c481c54b0" alt="Swiss Alps">
+                    <div class="app-slider-caption">Adventure in the Swiss Alps</div>
+                </div>
+                <div class="app-slider-slide">
+                    <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e" alt="Tokyo City">
+                    <div class="app-slider-caption">Experience Tokyo Culture</div>
+                </div>
+                <div class="app-slider-slide">
+                    <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c" alt="Dubai Skyline">
+                    <div class="app-slider-caption">Luxury in Dubai</div>
+                </div>
+            </div>
+            <div class="app-slider-pagination"></div>
+        </div>
+    </div>
+
+    <!-- Tour Statistics Cards -->
+    <div class="container mt-4">
+        <div class="row g-3">
+            <!-- Total Joined Card -->
+            <div class="col-3">
+                <div class="stat-card text-center py-2">
+                    <div class="app-category-icon mx-auto">
+                        <i class="fas fa-users text-primary"></i>
+                    </div>
+                    <h5 class="card-title mb-0 fs-6">120</h5>
+                    <p class="card-text mb-0">Joined</p>
+                </div>
+            </div>
+            <!-- Tour Date Card -->
+            <div class="col-3">
+                <div class="stat-card text-center py-2">
+                    <div class="app-category-icon mx-auto">
+                        <i class="far fa-calendar-alt text-primary"></i>
+                    </div>
+                    <h5 class="card-title mb-0 fs-6">Nov-Dec</h5>
+                    <p class="card-text mb-0">Tour Date</p>
+                </div>
+            </div>
+            <!-- Session Number Card -->
+            <div class="col-3">
+                <div class="stat-card text-center py-2">
+                    <div class="app-category-icon mx-auto">
+                        <i class="fas fa-ticket-alt text-primary"></i>
+                    </div>
+                    <h5 class="card-title mb-0 fs-6">8</h5>
+                    <p class="card-text mb-0">Sessions</p>
+                </div>
+            </div>
+            <!-- Ratings Card -->
+            <div class="col-3">
+                <div class="stat-card text-center py-2">
+                    <div class="app-category-icon mx-auto">
+                        <i class="fas fa-star text-primary"></i>
+                    </div>
+                    <h5 class="card-title mb-0 fs-6">4.8/5</h5>
+                    <p class="card-text mb-0">Rating</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="container my-5">
+        <div class="row g-5">
+            <!-- Main Content -->
+            <div class="col-12">
+                <!-- Tour Header Card -->
+                <div class="app-card mb-3 p-3 rounded-4 shadow-sm">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="badge bg-primary px-3 py-2 rounded-pill">Luxury Travels</span>
+                        <div class="text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span class="ms-1 small">4.8</span>
+                        </div>
+                    </div>
+                    <h2 class="fs-3 fw-bold mb-1">Maldives Paradise Escape</h2>
+                    <div class="d-flex gap-3 text-muted mb-2 small">
+                        <span><i class="fas fa-clock me-1"></i> 5 Days</span>
+                        <span><i class="fas fa-users me-1"></i> 2-4 People</span>
+                        <span><i class="fas fa-map-marker-alt me-1"></i> Maldives</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="text-primary mb-0">$1,999 <small class="text-muted">/ person</small></h3>
+                        <button class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                            <i class="fas fa-heart me-1"></i> Save
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Tour Highlights Card -->
+                <div class="app-card mb-3 p-3 rounded-4 shadow-sm">
+                    <h4 class="mb-3 d-flex align-items-center">
+                        <i class="fas fa-info-circle text-primary me-2"></i> Tour Highlights
+                    </h4>
+                    <p class="mb-3">Experience ultimate luxury in the Maldives with this all-inclusive package:</p>
+                    <div class="row g-2 mb-2">
+                        <div class="col-6">
+                            <div class="highlight-item d-flex align-items-center p-2 rounded bg-light">
+                                <i class="fas fa-hotel text-primary me-2"></i>
+                                <span>3 nights in overwater villa</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="highlight-item d-flex align-items-center p-2 rounded bg-light">
+                                <i class="fas fa-utensils text-primary me-2"></i>
+                                <span>Daily breakfast & dinner</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="highlight-item d-flex align-items-center p-2 rounded bg-light">
+                                <i class="fas fa-swimmer text-primary me-2"></i>
+                                <span>Snorkeling equipment rental</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="highlight-item d-flex align-items-center p-2 rounded bg-light">
+                                <i class="fas fa-shuttle-van text-primary me-2"></i>
+                                <span>Airport transfers</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tour Itinerary Timeline -->
+                <div class="app-card mb-3 p-3 rounded-4 shadow-sm">
+                    <h4 class="mb-3 d-flex align-items-center">
+                        <i class="fas fa-route text-primary me-2"></i> Tour Itinerary
+                    </h4>
+                    <div class="tour-timeline">
+                        <!-- Day 1 -->
+                        <div class="timeline-item active mb-3">
+                            <div class="timeline-dot bg-primary"></div>
+                            <div class="timeline-content p-3 rounded-4 shadow-sm">
+                                <h5 class="timeline-title fw-bold mb-2">Day 1: Arrival & Welcome</h5>
+                                <p class="mb-0">Airport transfer to resort, welcome drink, and villa check-in. Enjoy a sunset welcome dinner by the beach.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Day 2 -->
+                        <div class="timeline-item mb-3">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content p-3 rounded-4 shadow-sm">
+                                <h5 class="timeline-title fw-bold mb-2">Day 2: Island Exploration</h5>
+                                <p class="mb-0">Morning snorkeling session with marine biologist, afternoon island hopping tour, and evening beachside BBQ dinner.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Day 3 -->
+                        <div class="timeline-item mb-3">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content p-3 rounded-4 shadow-sm">
+                                <h5 class="timeline-title fw-bold mb-2">Day 3: Relaxation & Activities</h5>
+                                <p class="mb-0">Morning yoga session, spa treatment, optional water sports activities, and romantic dinner in your villa.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Day 4 -->
+                        <div class="timeline-item mb-3">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content p-3 rounded-4 shadow-sm">
+                                <h5 class="timeline-title fw-bold mb-2">Day 4: Underwater Adventure</h5>
+                                <p class="mb-0">Full-day diving or snorkeling excursion to nearby reefs, dolphin watching cruise, and farewell dinner.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Day 5 -->
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content p-3 rounded-4 shadow-sm">
+                                <h5 class="timeline-title fw-bold mb-2">Day 5: Departure</h5>
+                                <p class="mb-0">Breakfast at leisure, late checkout option, and airport transfer with souvenir gift.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Booking Section -->
+            <div class="col-12">
+                <!-- Booking Card -->
+                <div class="app-card mb-3 p-3 rounded-4 shadow-sm">
+                    <h4 class="mb-3 d-flex align-items-center">
+                        <i class="fas fa-calendar-check text-primary me-2"></i> Book Your Trip
+                    </h4>
+                    
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="form-floating">
+                                <input type="date" class="form-control rounded-3" id="travelDate">
+                                <label for="travelDate">Travel Date</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-floating">
+                                <select class="form-select rounded-3" id="travelers">
+                                    <option value="1">1 Person</option>
+                                    <option value="2">2 People</option>
+                                    <option value="3">3 People</option>
+                                    <option value="4">4 People</option>
+                                </select>
+                                <label for="travelers">Travelers</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-primary w-100 py-3 rounded-3 shadow-sm">
+                                <i class="fas fa-paper-plane me-2"></i> Request Booking
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Reviews Card -->
+                <div class="app-card mb-3 p-3 rounded-4 shadow-sm">
+                    <h4 class="mb-3 d-flex align-items-center">
+                        <i class="fas fa-star text-primary me-2"></i> Reviews
+                        <span class="badge bg-primary rounded-pill ms-2">120</span>
+                    </h4>
+                    
+                    <div class="review-summary d-flex align-items-center mb-3">
+                        <div class="display-4 fw-bold me-3">4.8</div>
+                        <div class="d-flex flex-column">
+                            <div class="text-warning mb-1">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-muted small">Based on 120 reviews</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Sample Review -->
+                    <div class="review-item p-3 bg-light rounded-3 mb-2">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="fw-bold">Sarah J.</span>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="mb-1 small">Absolutely amazing experience! The overwater villa was stunning and staff was incredibly attentive.</p>
+                        <span class="text-muted smaller">Traveled: October 2023</span>
+                    </div>
+                    
+                    <button class="btn btn-sm btn-outline-primary w-100">
+                        <i class="fas fa-comments me-1"></i> View All Reviews
+                    </button>
+                </div>
+                
+                <!-- Tour Operator Card -->
+                <div class="app-card mb-3 p-3 rounded-4 shadow-sm">
+                    <h4 class="mb-3 d-flex align-items-center">
+                        <i class="fas fa-building text-primary me-2"></i> Tour Operator
+                    </h4>
+                    
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="operator-logo bg-light rounded-circle p-2 me-3">
+                            <i class="fas fa-plane-departure text-primary fs-3"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Luxury Travels</h5>
+                            <p class="text-muted mb-0 small">Premium tour operator since 2003</p>
+                        </div>
+                    </div>
+                    
+                    <div class="operator-contact">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <i class="fas fa-phone-alt text-primary"></i>
+                            <a href="tel:+18005551234" class="text-decoration-none">+1 800-555-1234</a>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-envelope text-primary"></i>
+                            <a href="mailto:contact@luxurytravels.com" class="text-decoration-none">contact@luxurytravels.com</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav d-flex justify-content-between align-items-center">
+        <a href="index.html" class="nav-item nav-link">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="packages.html" class="nav-item nav-link active">
+            <i class="fas fa-suitcase"></i>
+            <span>Tours</span>
+        </a>
+        <a href="#" class="nav-item nav-link">
+            <i class="fas fa-search"></i>
+            <span>Search</span>
+        </a>
+        <a href="#" class="nav-item nav-link">
+            <i class="fas fa-heart"></i>
+            <span>Favorites</span>
+        </a>
+        <a href="login.html" class="nav-item nav-link">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- PWA Script -->
+    <script src="js/pwa.js"></script>
+    <!-- App Slider Script -->
+    <script src="js/app-slider.js"></script>
+</body>
+</html>

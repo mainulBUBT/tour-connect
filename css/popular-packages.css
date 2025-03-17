@@ -1,0 +1,152 @@
+/* Popular Packages Horizontal Card Styles */
+.popular-package-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.popular-package-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.popular-package-img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.popular-package-card:hover .popular-package-img {
+    transform: scale(1.05);
+}
+
+.popular-package-body {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.popular-package-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.popular-package-text {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.popular-package-price {
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .popular-package-img-container {
+        height: 140px;
+        overflow: hidden;
+    }
+    
+    .popular-package-body {
+        padding: 0.75rem;
+    }
+    
+    .popular-package-title {
+        font-size: 1rem;
+    }
+    
+    .popular-package-text {
+        font-size: 0.8rem;
+        margin-bottom: 0.4rem;
+    }
+    
+    .popular-package-price {
+        font-size: 1.1rem;
+    }
+}
+
+/* Medium tablet styles (specifically for 853x1280 and similar resolutions) */
+@media (min-width: 768px) and (max-width: 991px) {
+    /* Specific styles for 853x1280 and similar tablet resolutions */
+    .popular-package-card .row {
+        flex-direction: row; /* Keep horizontal layout for better use of space */
+    }
+    
+    .popular-package-card .col-5 {
+        width: 40%; /* Adjust image container width */
+    }
+    
+    .popular-package-card .col-7 {
+        width: 60%; /* Adjust content container width */
+    }
+    
+    .popular-package-img-container {
+        height: 100%; /* Make image container full height */
+        overflow: hidden;
+    }
+    
+    .popular-package-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .popular-package-body {
+        padding: 0.75rem;
+    }
+    
+    .card-info-icon {
+        font-size: 0.8rem;
+        margin-right: 8px;
+        margin-bottom: 4px;
+    }
+    
+    .card-organizer {
+        padding: 0.4rem;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    .popular-package-title {
+        font-size: 1rem;
+        margin-bottom: 0.4rem;
+    }
+    
+    /* Ensure we only show 2 cards per row on medium screens */
+    .row > .col-md-6 {
+        flex: 0 0 auto;
+        width: 50%;
+    }
+}
+
+@media (max-width: 576px) {
+    .popular-package-img-container {
+        height: 120px;
+    }
+    
+    .popular-package-body {
+        padding: 0.6rem;
+    }
+    
+    .popular-package-title {
+        font-size: 0.95rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    .popular-package-text {
+        font-size: 0.75rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    .popular-package-price {
+        font-size: 1rem;
+    }
+}

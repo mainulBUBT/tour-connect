@@ -1,0 +1,592 @@
+/* Mobile App-like Enhancements for Tour Packages
+ * Adds modern mobile app styling to make the experience more professional
+ */
+
+/* Enhanced App Header */
+.app-header {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    background-image: linear-gradient(to right, var(--primary), var(--primary-dark));
+    padding: 0.8rem 0;
+    transition: all 0.3s ease;
+}
+
+.app-header .navbar-brand {
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+.app-header .btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.app-header .btn:active {
+    transform: scale(0.9);
+    background-color: rgba(255,255,255,0.1);
+}
+
+/* Enhanced Slider */
+.app-slider-container {
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+}
+
+.app-slider {
+    height: 220px;
+    transition: transform 0.4s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+}
+
+.app-slider-slide {
+    position: relative;
+    overflow: hidden;
+}
+
+.app-slider-slide img {
+    transition: transform 0.5s ease;
+}
+
+.app-slider-slide:hover img {
+    transform: scale(1.05);
+}
+
+.app-slider-caption {
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    padding: 20px 15px 15px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.app-slider-pagination {
+    bottom: 15px;
+}
+
+.app-slider-dot {
+    width: 6px;
+    height: 6px;
+    opacity: 0.7;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.app-slider-dot.active {
+    width: 24px;
+    opacity: 1;
+    background-color: white;
+}
+
+/* Enhanced Stat Cards */
+.stat-card {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    border: none;
+    background: white;
+}
+
+.stat-card:active {
+    transform: scale(0.98);
+}
+
+.app-category-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background-color: rgba(16, 64, 59, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover .app-category-icon {
+    transform: translateY(-5px);
+    background-color: rgba(16, 64, 59, 0.15);
+}
+
+.stat-card .card-title {
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 2px;
+    font-size: 1.1rem;
+}
+
+.stat-card .card-text {
+    color: #6c757d;
+    font-weight: 500;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Enhanced Bottom Navigation */
+.mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 12px 0 8px;
+    background: white;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+}
+
+.mobile-bottom-nav .nav-link {
+    position: relative;
+    padding: 8px 0;
+    font-weight: 500;
+}
+
+.mobile-bottom-nav .nav-link i {
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+    transition: all 0.3s ease;
+}
+
+.mobile-bottom-nav .nav-link.active i {
+    transform: translateY(-2px);
+}
+
+.mobile-bottom-nav .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: var(--primary);
+}
+
+/* Enhanced Main Content Cards */
+.main-card {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: none;
+}
+
+.main-card .card-body {
+    padding: 1.5rem;
+}
+
+.main-card .display-5 {
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--text-dark);
+}
+
+.main-card .badge {
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    font-size: 0.8rem;
+}
+
+.main-card .text-muted {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.main-card .list-group-item {
+    padding: 1rem 0;
+    border-color: rgba(0,0,0,0.05);
+}
+
+/* Booking Card */
+.booking-card {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: none;
+}
+
+.booking-card .card-body {
+    padding: 1.5rem;
+}
+
+.booking-card .text-primary {
+    font-weight: 700;
+}
+
+.booking-card .form-control,
+.booking-card .form-select {
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    border: 1px solid rgba(0,0,0,0.1);
+    background-color: #f8f9fa;
+}
+
+.booking-card .btn {
+    border-radius: 12px;
+    padding: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.booking-card .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* My Tours Styles */
+/* App Logo */
+.app-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.app-logo img {
+    height: 32px;
+    width: 32px;
+    margin-right: 8px;
+}
+
+.app-logo-text {
+    color: var(--text-light);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+/* Header Icon Buttons */
+.header-icon-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    color: var(--text-light);
+    font-size: 1.2rem;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.header-icon-btn:active {
+    transform: scale(0.9);
+    background-color: rgba(255,255,255,0.1);
+}
+
+/* Notification Badge Styling */
+.notification-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--secondary);
+    color: white;
+    font-size: 0.65rem;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+/* Tour Booking Card Styles */
+.booking-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+}
+
+.booking-card:active {
+    transform: scale(0.98);
+}
+
+.booking-card-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.booking-id {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.booking-status {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 12px;
+}
+
+.status-upcoming {
+    background-color: var(--info-light);
+    color: var(--info);
+}
+
+.status-completed {
+    background-color: var(--success-light);
+    color: var(--success);
+}
+
+.status-cancelled {
+    background-color: var(--danger-light);
+    color: var(--danger);
+}
+
+.status-pending {
+    background-color: var(--warning-light);
+    color: var(--warning-dark);
+}
+
+.booking-card-body {
+    padding: 16px;
+}
+
+.booking-tour-info {
+    display: flex;
+    margin-bottom: 12px;
+}
+
+.booking-tour-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-right: 12px;
+}
+
+.booking-tour-details h5 {
+    font-size: 1rem;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.booking-info-item {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.booking-info-item i {
+    width: 16px;
+    margin-right: 6px;
+    color: var(--primary);
+}
+
+.booking-card-footer {
+    padding: 12px 16px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.booking-price {
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.booking-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.booking-action-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+}
+
+/* Filter Tabs */
+.filter-tabs {
+    display: flex;
+    overflow-x: auto;
+    padding: 8px 0;
+    margin-bottom: 16px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.filter-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-tab {
+    padding: 8px 16px;
+    background-color: white;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+    margin-right: 8px;
+    border: 1px solid rgba(0,0,0,0.1);
+    color: var(--text-muted);
+}
+
+.filter-tab.active {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* Empty State */
+.empty-bookings {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.empty-bookings i {
+    font-size: 3rem;
+    color: var(--text-light);
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.empty-bookings h3 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: var(--text-dark);
+}
+
+.empty-bookings p {
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    font-size: 0.9rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .app-slider {
+        height: 180px;
+    }
+    
+    .app-slider-caption {
+        font-size: 1rem;
+        padding: 15px 10px 10px;
+    }
+    
+    .stat-card .card-title {
+        font-size: 0.9rem;
+    }
+    
+    .stat-card .card-text {
+        font-size: 0.7rem;
+    }
+    
+    .app-category-icon {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .main-card .display-5 {
+        font-size: 1.5rem;
+    }
+    
+    /* Ensure content doesn't get hidden under bottom nav */
+    body {
+        padding-bottom: 80px;
+    }
+    
+    /* Adjust card spacing for better mobile view */
+    .card {
+        margin-bottom: 15px;
+    }
+    
+    .card-body {
+        padding: 0.75rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .app-slider {
+        height: 160px;
+    }
+    
+    .app-slider-caption {
+        font-size: 0.9rem;
+        padding: 12px 8px 8px;
+    }
+    
+    .app-category-icon {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .mobile-bottom-nav .nav-link i {
+        font-size: 1.2rem;
+    }
+    
+    .mobile-bottom-nav .nav-link span {
+        font-size: 0.65rem;
+    }
+    
+    /* Further adjustments for small screens */
+    body {
+        padding-bottom: 85px;
+    }
+    
+    /* Optimize card layout */
+    .card-img-top {
+        height: 140px !important;
+    }
+    
+    .card-body {
+        padding: 0.6rem;
+    }
+    
+    .card-title {
+        font-size: 0.9rem;
+        margin-bottom: 0.4rem;
+    }
+    
+    .card-info-icon {
+        margin-right: 8px;
+        margin-bottom: 4px;
+        font-size: 0.75rem;
+    }
+    
+    /* Adjust filter button position */
+    .mobile-filter-toggle {
+        bottom: 90px;
+    }
+    
+    /* Improve spacing */
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .row {
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+    
+    .col-6, .col-md-6, .col-lg-4 {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}

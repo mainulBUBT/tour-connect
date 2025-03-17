@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#003554">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TourConnect">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
+    <title>TourConnect - My Tours</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/colors.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/mobile-app.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom JavaScript -->
+    <script src="js/pwa.js" defer></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            padding-bottom: 80px; /* Increased space for bottom navigation */
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            background-color: #f8f9fa;
+        }
+        
+        /* Mobile App-like Header */
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background-image: linear-gradient(to right, var(--primary), var(--primary-dark));
+            padding: 0.8rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        /* App Logo */
+        .app-logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .app-logo img {
+            height: 32px;
+            width: 32px;
+            margin-right: 8px;
+        }
+        
+        .app-logo-text {
+            color: var(--text-light);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+        
+        /* Header Icon Buttons */
+        .header-icon-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .header-icon-btn:active {
+            transform: scale(0.9);
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        /* Notification Badge Styling */
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--secondary);
+            color: white;
+            font-size: 0.65rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        /* Tour Booking Card Styles */
+        .booking-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+        
+        .booking-card:active {
+            transform: scale(0.98);
+        }
+        
+        .booking-card-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .booking-id {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        
+        .booking-status {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+        
+        .status-upcoming {
+            background-color: var(--info-light);
+            color: var(--info);
+        }
+        
+        .status-completed {
+            background-color: var(--success-light);
+            color: var(--success);
+        }
+        
+        .status-cancelled {
+            background-color: var(--danger-light);
+            color: var(--danger);
+        }
+        
+        .status-pending {
+            background-color: var(--warning-light);
+            color: var(--warning-dark);
+        }
+        
+        .booking-card-body {
+            padding: 16px;
+        }
+        
+        .booking-tour-info {
+            display: flex;
+            margin-bottom: 12px;
+        }
+        
+        .booking-tour-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 12px;
+        }
+        
+        .booking-tour-details h5 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        
+        .booking-info-item {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .booking-info-item i {
+            width: 16px;
+            margin-right: 6px;
+            color: var(--primary);
+        }
+        
+        .booking-card-footer {
+            padding: 12px 16px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .booking-price {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .booking-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .booking-action-btn {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+        
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            overflow-x: auto;
+            padding: 8px 0;
+            margin-bottom: 16px;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .filter-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .filter-tab {
+            padding: 8px 16px;
+            background-color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+            margin-right: 8px;
+            border: 1px solid rgba(0,0,0,0.1);
+            color: var(--text-muted);
+        }
+        
+        .filter-tab.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* Empty State */
+        .empty-bookings {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .empty-bookings i {
+            font-size: 3rem;
+            color: var(--text-light);
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        .empty-bookings h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+        
+        .empty-bookings p {
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .section-title {
+                font-size: 1.3rem;
+                margin-bottom: 1rem;
+            }
+            
+            .booking-tour-details h5 {
+                font-size: 0.95rem;
+            }
+            
+            .booking-info-item {
+                font-size: 0.8rem;
+            }
+            
+            .container {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile App-like Header -->
+    <header class="app-header bg-primary py-3">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- Back Button -->
+                <button class="header-icon-btn" type="button" onclick="window.history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                
+                <!-- Logo -->
+                <a href="index.html" class="app-logo">
+                    <img src="images/icons/icon-72x72.png" alt="TourConnect Logo">
+                    <h1 class="app-logo-text">My Tours</h1>
+                </a>
+                
+                <!-- Header Icons -->
+                <div class="app-header-icons">
+                    <button class="header-icon-btn" type="button">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="container mt-3">
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+            <button class="filter-tab active">All Bookings</button>
+            <button class="filter-tab">Upcoming</button>
+            <button class="filter-tab">Completed</button>
+            <button class="filter-tab">Pending</button>
+            <button class="filter-tab">Cancelled</button>
+        </div>
+        
+        <!-- Bookings List -->
+        <div class="bookings-list">
+            <!-- Booking Card 1 - Upcoming -->
+            <div class="booking-card">
+                <div class="booking-card-header">
+                    <span class="booking-id">Booking #TRB-2023-8745</span>
+                    <span class="booking-status status-upcoming">Upcoming</span>
+                </div>
+                <div class="booking-card-body">
+                    <div class="booking-tour-info">
+                        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4" class="booking-tour-image" alt="Paris Tour">
+                        <div class="booking-tour-details">
+                            <h5>Paris Romance Tour</h5>
+                            <div class="booking-info-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>France</span>
+                            </div>
+                            <div class="booking-info-item">
+                                <i class="far fa-calendar-alt"></i>
+                                <span>Dec 10-16, 2023</span>
+                            </div>
+                            <div class="booking-info-item">
+                                <i class="fas fa-users"></i>
+                                <span>2 Adults</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="booking-card-footer">
+                    <div class="booking-price">$2,199</div>
+                    <div class="booking-actions">
+                        <button class="btn btn-sm btn-outline-danger booking-action-btn">Cancel</button>
+                        <button class="btn btn-sm btn-primary booking-action-btn">View Details</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Booking Card 2 - Completed -->
+            <div class="booking-card">
+                <div class="booking-card-header">
+                    <span class="booking-id">Booking #TRB-2023-6532</span>
+                    <span class="booking-status status-completed">Completed</span>
+                </div>
+                <div class="booking-card-body">
+                    <div class="booking-tour-info">
+                        <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e" class="booking-tour-image" alt="Tokyo Tour">
+                        <div class="booking-tour-details">
+                            <h5>Tokyo Cultural Experience</h5>
+                            <div class="booking-info-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Japan</span>
+                            </div>
+                            <div class="booking-info-item">
+                                <i class="far fa-calendar-alt"></i>
+                                <span>Oct 10-18, 2023</span>
+                            </div>
+                            <div class="booking-info-item">
+                                <i class="fas fa-users"></i>
+                                <span>1 Adult</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="booking-card-footer">
+                    <div class="booking-price">$2,199</div>
+                    <div class="booking-actions">
+                        <button class="btn btn-sm btn-outline-danger booking-action-btn">Cancel</button>
+                        <button class="btn btn-sm btn-primary booking-action-btn">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <nav class="mt-4 mb-3" aria-label="Bookings pagination">
+            <ul class="pagination justify-content-center pagination-sm flex-wrap">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <style>
+        .pagination {
+            gap: 5px;
+        }
+        .page-link {
+            border-radius: 8px;
+            border: 1px solid rgba(0,0,0,0.1);
+            color: var(--text-dark);
+            padding: 8px 12px;
+            min-width: 36px;
+            text-align: center;
+        }
+        .page-link:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary-light);
+        }
+        .page-item.active .page-link {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        .page-item.disabled .page-link {
+            background-color: #f8f9fa;
+            color: var(--text-muted);
+        }
+    </style>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
