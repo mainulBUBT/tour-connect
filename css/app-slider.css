@@ -1,15 +1,17 @@
 .app-slider-container {
     position: relative;
     overflow: hidden;
-    border-radius: 16px;
+    border-radius: 12px;
     margin: 0 auto;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    background: linear-gradient(145deg, #ffffff, #f3f3f3);
 }
 
 .app-slider {
     display: flex;
-    transition: transform 0.5s ease;
-    height: 200px;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 280px;
+    will-change: transform;
 }
 
 .app-slider-slide {
@@ -21,6 +23,12 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transform: scale(1);
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-slider-slide.active img {
+    transform: scale(1.05);
 }
 
 .app-slider-caption {
@@ -28,11 +36,14 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0));
     color: white;
-    padding: 15px;
-    font-size: 1.1rem;
-    font-weight: 500;
+    padding: 30px 20px 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transform: translateY(0);
+    transition: transform 0.4s ease;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
 .app-slider-pagination {
@@ -47,37 +58,46 @@
 }
 
 .app-slider-dot {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    background-color: rgba(255,255,255,0.5);
-    transition: all 0.3s ease;
+    background-color: rgba(255,255,255,0.4);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border: 2px solid rgba(255,255,255,0.6);
+    backdrop-filter: blur(4px);
+}
+
+.app-slider-dot:hover {
+    background-color: rgba(255,255,255,0.8);
 }
 
 .app-slider-dot.active {
     background-color: white;
-    width: 20px;
-    border-radius: 4px;
+    width: 24px;
+    border-radius: 6px;
+    border-color: white;
+    box-shadow: 0 0 10px rgba(255,255,255,0.4);
 }
 
 @media (max-width: 768px) {
     .app-slider {
-        height: 180px;
+        height: 220px;
     }
     
     .app-slider-caption {
-        padding: 10px;
-        font-size: 1rem;
+        padding: 25px 15px 15px;
+        font-size: 1.1rem;
     }
 }
 
 @media (max-width: 576px) {
     .app-slider {
-        height: 160px;
+        height: 180px;
     }
     
     .app-slider-caption {
-        padding: 8px;
-        font-size: 0.9rem;
+        padding: 20px 12px 12px;
+        font-size: 1rem;
     }
 }
