@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add footer
         const footer = document.createElement('div');
         footer.className = 'notifications-footer';
-        footer.innerHTML = '<a href="#">View all notifications</a>';
+        footer.innerHTML = '<a href="notifications.html">View all notifications</a>';
         dropdown.appendChild(footer);
         
         // Append dropdown to notification button

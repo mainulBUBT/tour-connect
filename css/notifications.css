@@ -28,7 +28,24 @@
     }
 }
 
-.notifications-dropdown.show {
+.notifications-dropdown.show,
+#notification-toggle:target {
+    display: block;
+}
+
+/* Close button for CSS-only solution */
+.notification-close {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    z-index: 1040;
+    display: none;
+}
+
+#notification-toggle:target + .notification-close {
     display: block;
 }
 
@@ -97,6 +114,7 @@
     margin: 0 0 5px 0;
     font-size: 0.9rem;
     line-height: 1.4;
+    color: #333;
 }
 
 .notification-time {
@@ -143,13 +161,19 @@
     .notifications-dropdown {
         width: 90%;
         max-width: 300px;
-        right: -70px;
+        right: 0;
+        left: 0;
+        margin-left: auto;
+        margin-right: auto;
         max-height: 80vh;
         font-size: 14px;
+        position: fixed;
+        top: 60px;
+        z-index: 1100;
     }
     
     .notifications-dropdown:after {
-        right: 85px;
+        right: 25px;
     }
     
     .notifications-header {
@@ -199,12 +223,25 @@
 /* Extra small devices */
 @media (max-width: 375px) {
     .notifications-dropdown {
-        width: 95%;
-        right: -50px;
-        left: auto;
+        width: 90%;
+        right: 0;
+        left: 0;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 280px;
+        z-index: 1100;
     }
     
     .notification-text {
         font-size: 0.8rem;
+    }
+    
+    .notification-icon {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .notification-icon i {
+        font-size: 0.9rem;
     }
 }

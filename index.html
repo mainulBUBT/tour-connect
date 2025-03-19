@@ -27,7 +27,6 @@
     <script src="js/filters.js" defer></script>
     <script src="js/pwa.js" defer></script>
     <script src="js/center-carousel.js" defer></script>
-    <script src="js/notifications.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const searchToggleBtn = document.getElementById('searchToggleBtn');
@@ -305,10 +304,51 @@
                     <button class="header-icon-btn" id="searchToggleBtn">
                         <i class="fas fa-search"></i>
                     </button>
-                    <button class="header-icon-btn">
+                    <a href="#notification-toggle" class="header-icon-btn">
                         <i class="fas fa-bell"></i>
                         <span class="notification-badge">3</span>
-                    </button>
+                    </a>
+                    <div id="notification-toggle" class="notifications-dropdown">
+                        <div class="notifications-header">
+                            <h5 class="notifications-title">Notifications</h5>
+                            <a href="#" class="text-muted small">Mark all as read</a>
+                        </div>
+                        <ul class="notifications-list">
+                            <li class="notification-item unread">
+                                <div class="notification-icon">
+                                    <i class="fas fa-tag"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <p class="notification-text">Special 20% discount on Bali tours this weekend!</p>
+                                    <p class="notification-time">2 hours ago</p>
+                                </div>
+                                <span class="notification-dot"></span>
+                            </li>
+                            <li class="notification-item unread">
+                                <div class="notification-icon">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <p class="notification-text">Your booking for Maldives Paradise Escape has been confirmed.</p>
+                                    <p class="notification-time">1 day ago</p>
+                                </div>
+                                <span class="notification-dot"></span>
+                            </li>
+                            <li class="notification-item">
+                                <div class="notification-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <p class="notification-text">New tour package available: Swiss Alps Adventure</p>
+                                    <p class="notification-time">3 days ago</p>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="notifications-footer">
+                            <a href="notifications.html">View all notifications</a>
+                        </div>
+                    </div>
+                    <a href="#" class="notification-close"></a>
                 </div>
             </div>
             <!-- Search Bar Container -->
@@ -403,7 +443,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link px-3 py-3" href="#">
+                    <a class="nav-link px-3 py-3" href="notifications.html">
                         <i class="fas fa-bell me-3 text-primary"></i>Notifications
                     </a>
                 </li>
