@@ -27,6 +27,7 @@
     <script src="js/filters.js" defer></script>
     <script src="js/pwa.js" defer></script>
     <script src="js/center-carousel.js" defer></script>
+    <script src="js/favorites.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const searchToggleBtn = document.getElementById('searchToggleBtn');
@@ -44,6 +45,33 @@
             padding-bottom: 70px; /* Space for bottom navigation */
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Add to favorites button */
+        .add-favorite {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            color: var(--primary);
+            font-size: 1.2rem;
+            z-index: 10;
+            transition: all 0.2s ease;
+        }
+        
+        .add-favorite:active {
+            transform: scale(0.9);
+        }
+        
+        .add-favorite.active {
+            color: var(--danger);
         }
         
         /* Mobile App-like Header */
@@ -610,6 +638,9 @@
                         <div class="position-relative">
                             <img src="https://images.unsplash.com/photo-1602002418082-a4443e081dd1" class="card-img-top" alt="Maldives Beach Resort">
                             <div class="card-price-overlay">$1,999</div>
+                            <button class="add-favorite" data-id="pkg1">
+                                <i class="far fa-heart"></i>
+                            </button>
                         </div>
                         <div class="card-body d-flex flex-column py-2">
                             <h5 class="card-title mb-1"><a href="packages.html">Maldives Paradise Escape</a></h5>
@@ -622,6 +653,7 @@
                             <div class="d-flex flex-wrap mb-1">
                                 <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>Maldives</span>
                             </div>
+
                             <!-- Organizer at the bottom -->
                             <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
                                 <div class="d-flex align-items-center">
@@ -639,6 +671,9 @@
                         <div class="position-relative">
                             <img src="https://images.unsplash.com/photo-1491555103944-7c647fd857e6" class="card-img-top" alt="Swiss Alps">
                             <div class="card-price-overlay">$2,499</div>
+                            <button class="add-favorite" data-id="pkg2">
+                                <i class="far fa-heart"></i>
+                            </button>
                         </div>
                         <div class="card-body d-flex flex-column py-2">
                             <h5 class="card-title mb-1"><a href="packages.html">Swiss Alps Adventure</a></h5>
@@ -651,6 +686,7 @@
                             <div class="d-flex flex-wrap mb-1">
                                 <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>Switzerland</span>
                             </div>
+
                             <!-- Organizer at the bottom -->
                             <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
                                 <div class="d-flex align-items-center">
@@ -668,6 +704,9 @@
                         <div class="position-relative">
                             <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e" class="card-img-top" alt="Tokyo">
                             <div class="card-price-overlay">$1,799</div>
+                            <button class="add-favorite" data-id="pkg3">
+                                <i class="far fa-heart"></i>
+                            </button>
                         </div>
                         <div class="card-body d-flex flex-column py-2">
                             <h5 class="card-title mb-1"><a href="packages.html">Tokyo Cultural Experience</a></h5>
@@ -680,6 +719,7 @@
                             <div class="d-flex flex-wrap mb-1">
                                 <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>Japan</span>
                             </div>
+
                             <!-- Organizer at the bottom -->
                             <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
                                 <div class="d-flex align-items-center">
@@ -697,6 +737,9 @@
                         <div class="position-relative">
                             <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c" class="card-img-top" alt="Dubai">
                             <div class="card-price-overlay">$1,599</div>
+                            <button class="add-favorite" data-id="pkg4">
+                                <i class="far fa-heart"></i>
+                            </button>
                         </div>
                         <div class="card-body d-flex flex-column py-2">
                             <h5 class="card-title mb-1"><a href="packages.html">Dubai Desert Safari</a></h5>
@@ -709,6 +752,7 @@
                             <div class="d-flex flex-wrap mb-1">
                                 <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>UAE</span>
                             </div>
+
                             <!-- Organizer at the bottom -->
                             <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
                                 <div class="d-flex align-items-center">
@@ -766,7 +810,7 @@
                 <!-- Organizer Card 1 -->
                 <div class="organizer-card">
                     <div class="organizer-profile">
-                        <img src="https://images.unsplash.com/photo-1594564781336-726aae077800" alt="Luxury Travels">
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945" alt="Luxury Travels">
                         <div class="verified-badge">
                             <i class="fas fa-check"></i>
                         </div>
