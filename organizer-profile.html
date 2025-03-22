@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#003554">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TourConnect">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
+    <title>Organizer Profile - TourConnect</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/colors.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/mobile-app.css" rel="stylesheet">
+    <link href="css/organizers.css" rel="stylesheet">
+    <link href="css/popular-packages.css" rel="stylesheet">
+    <link href="css/social-media.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom JavaScript -->
+    <script src="js/pwa.js" defer></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            padding-bottom: 80px; /* Increased space for bottom navigation */
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            background-color: #f8f9fa;
+            overflow-x: hidden;
+        }
+
+        /* Organizer Profile Header */
+        .organizer-profile-header {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .organizer-profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            padding: 3px;
+            background-color: white;
+            margin: 0 auto 15px;
+        }
+        
+        .organizer-profile-name {
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            color: var(--text-dark);
+        }
+        
+        .organizer-profile-specialty {
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+        
+        .organizer-profile-rating {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 2px;
+        }
+        
+        .organizer-profile-rating i {
+            color: #FFD700;
+            font-size: 1rem;
+        }
+        
+        .organizer-profile-rating-value {
+            margin-left: 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+        
+        .organizer-profile-stats {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .organizer-profile-stat-item {
+            flex: 1;
+        }
+        
+        .organizer-profile-stat-value {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+        
+        .organizer-profile-stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        .verified-badge-large {
+            display: inline-flex;
+            align-items: center;
+            background-color: rgba(0, 53, 84, 0.1);
+            color: var(--primary);
+            border-radius: 50px;
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .verified-badge-large i {
+            margin-right: 5px;
+            font-size: 0.9rem;
+        }
+        
+        /* About Section */
+        .organizer-about-section {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        .organizer-description {
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        /* Timeline Section */
+        .timeline-section {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #e0e0e0;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -30px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7rem;
+        }
+        
+        .timeline-content {
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            padding: 15px;
+        }
+        
+        .timeline-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+        
+        .timeline-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-text {
+            font-size: 0.85rem;
+            color: var(--text-dark);
+        }
+        
+        /* Tours Section */
+        .organizer-tours-section {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .tour-card {
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .tour-card:last-child {
+            margin-bottom: 0;
+        }
+        
+        .tour-image {
+            width: 70px;
+            height: 70px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        .tour-details {
+            flex: 1;
+        }
+        
+        .tour-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+        
+        .tour-info {
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+        
+        .tour-info i {
+            margin-right: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .tour-info-item {
+            margin-right: 15px;
+        }
+        
+        .tour-price {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+        
+        /* Reviews Section */
+        .reviews-section {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .review-card {
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .review-card:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .review-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .reviewer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+        
+        .reviewer-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+        
+        .review-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        .review-rating {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+        }
+        
+        .review-rating i {
+            color: #FFD700;
+            font-size: 0.9rem;
+            margin-right: 2px;
+        }
+        
+        .review-text {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: var(--text-dark);
+        }
+        
+        /* Contact Section */
+        .contact-section {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .contact-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background-color: rgba(0, 53, 84, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        .contact-info {
+            flex: 1;
+        }
+        
+        .contact-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+        
+        .contact-value {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            border-radius: 12px;
+            padding: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .action-btn i {
+            margin-right: 8px;
+        }
+        
+        /* Bottom Navigation */
+        .mobile-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            padding: 10px 0 5px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+        
+        .mobile-bottom-nav .nav-item {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .mobile-bottom-nav .nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-dark);
+            font-size: 0.7rem;
+            padding: 5px;
+        }
+        
+        .mobile-bottom-nav .nav-link i {
+            font-size: 1.2rem;
+            margin-bottom: 3px;
+        }
+        
+        .mobile-bottom-nav .nav-link.active {
+            color: var(--primary);
+        }
+        
+        /* Status bar for iOS */
+        @supports (-webkit-touch-callout: none) {`
+            .app-header {
+                padding-top: env(safe-area-inset-top);
+            }
+            
+            .mobile-bottom-nav {
+                padding-bottom: env(safe-area-inset-bottom);
+                bottom: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile App-like Header -->
+    <header class="app-header">
+        <div class="container-fluid px-3">
+            <div class="d-flex align-items-center justify-content-between">
+                <!-- Back Button -->
+                <div>
+                    <a href="index.html" class="header-icon-btn">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+                
+                <!-- Centered Title -->
+                <div class="text-center">
+                    <h1 class="app-logo-text mb-0">Organizer Profile</h1>
+                </div>
+                
+                <!-- Header Icons -->
+                <div class="app-header-icons">
+                    <button class="header-icon-btn">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-4 px-3">
+        <!-- Organizer Profile Header -->
+        <div class="organizer-profile-header">
+            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945" alt="Luxury Travels" class="organizer-profile-avatar">
+            <h2 class="organizer-profile-name">Luxury Travels</h2>
+            <p class="organizer-profile-specialty">Premium Experiences</p>
+            <div class="verified-badge-large">
+                <i class="fas fa-check"></i> Verified Organizer
+            </div>
+            <div class="organizer-profile-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+                <span class="organizer-profile-rating-value">4.5 (128 reviews)</span>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn btn btn-primary">
+                    <i class="fas fa-envelope"></i> Contact
+                </button>
+                <button class="action-btn btn btn-outline-primary">
+                    <i class="fas fa-bookmark"></i> Save
+                </button>
+            </div>
+            <div class="organizer-profile-stats">
+                <div class="organizer-profile-stat-item">
+                    <div class="organizer-profile-stat-value">42</div>
+                    <div class="organizer-profile-stat-label">Tours</div>
+                </div>
+                <div class="organizer-profile-stat-item">
+                    <div class="organizer-profile-stat-value">5k+</div>
+                    <div class="organizer-profile-stat-label">Clients</div>
+                </div>
+                <div class="organizer-profile-stat-item">
+                    <div class="organizer-profile-stat-value">12</div>
+                    <div class="organizer-profile-stat-label">Years</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- About Section -->
+        <div class="organizer-about-section">
+            <h3 class="section-title">
+                <i class="fas fa-info-circle"></i> About
+            </h3>
+            <p class="organizer-description">
+                Luxury Travels is a premium tour operator specializing in high-end travel experiences around the world. With over 12 years of experience, we curate exclusive journeys that combine luxury accommodations, gourmet dining, and unique cultural experiences. Our team of expert travel consultants ensures every detail of your trip is meticulously planned for a seamless and unforgettable adventure.
+            </p>
+        </div>
+        
+
+        
+        <!-- Tours Section -->
+        <div class="organizer-tours-section">
+            <h3 class="section-title">
+                <i class="fas fa-map-marked-alt"></i> Featured Tours
+            </h3>
+            <div class="tour-card">
+                <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4" alt="Maldives Luxury Escape" class="tour-image">
+                <div class="tour-details">
+                    <h4 class="tour-title">Maldives Luxury Escape</h4>
+                    <div class="tour-info">
+                        <span class="tour-info-item"><i class="fas fa-calendar"></i> 7 days</span>
+                        <span class="tour-info-item"><i class="fas fa-user-friends"></i> Max 10</span>
+                    </div>
+                    <div class="tour-price">From $3,999</div>
+                </div>
+            </div>
+            <div class="tour-card">
+                <img src="https://images.unsplash.com/photo-1515315230580-6724d01b1560" alt="Swiss Alps Retreat" class="tour-image">
+                <div class="tour-details">
+                    <h4 class="tour-title">Swiss Alps Retreat</h4>
+                    <div class="tour-info">
+                        <span class="tour-info-item"><i class="fas fa-calendar"></i> 10 days</span>
+                        <span class="tour-info-item"><i class="fas fa-user-friends"></i> Max 8</span>
+                    </div>
+                    <div class="tour-price">From $4,599</div>
+                </div>
+            </div>
+            <div class="tour-card">
+                <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa" alt="Dubai & Abu Dhabi Experience" class="tour-image">
+                <div class="tour-details">
+                    <h4 class="tour-title">Dubai & Abu Dhabi Experience</h4>
+                    <div class="tour-info">
+                        <span class="tour-info-item"><i class="fas fa-calendar"></i> 8 days</span>
+                        <span class="tour-info-item"><i class="fas fa-user-friends"></i> Max 12</span>
+                    </div>
+                    <div class="tour-price">From $5,299</div>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <a href="#" class="btn btn-outline-primary rounded-pill px-4">
+                    View All Tours <i class="fas fa-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Reviews Section -->
+        <div class="reviews-section">
+            <h3 class="section-title">
+                <i class="fas fa-comment-alt"></i> Customer Reviews
+            </h3>
+            <div class="review-card">
+                <div class="review-header">
+                    <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Sarah J." class="reviewer-avatar">
+                    <div>
+                        <div class="reviewer-name">Sarah J.</div>
+                        <div class="review-date">2 weeks ago</div>
+                    </div>
+                    <div class="review-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <p class="review-text">Absolutely incredible experience with Luxury Travels! Every detail was perfectly arranged, from the 5-star accommodations to the private tours. Will definitely book with them again.</p>
+            </div>
+            <div class="review-card">
+                <div class="review-header">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael T." class="reviewer-avatar">
+                    <div>
+                        <div class="reviewer-name">Michael T.</div>
+                        <div class="review-date">1 month ago</div>
+                    </div>
+                    <div class="review-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                </div>
+                <p class="review-text">Our family trip to the Maldives was exceptional. The resort was stunning and the activities were perfect for all ages. Only minor issue was a slight delay with one transfer, but it was quickly resolved.</p>
+            </div>
+            <div class="review-card">
+                <div class="review-header">
+                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Emma L." class="reviewer-avatar">
+                    <div>
+                        <div class="reviewer-name">Emma L.</div>
+                        <div class="review-date">2 months ago</div>
+                    </div>
+                    <div class="review-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+                <p class="review-text">The Swiss Alps tour exceeded my expectations. The chalets were luxurious and the private ski lessons were top-notch. The tour guide was knowledgeable and attentive to everyone's needs.</p>
+            </div>
+            <div class="text-center mt-3">
+                <a href="#" class="btn btn-outline-primary rounded-pill px-4">
+                    View All Reviews <i class="fas fa-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Contact Section -->
+        <div class="contact-section">
+            <h3 class="section-title">
+                <i class="fas fa-address-card"></i> Contact Information
+            </h3>
+            <div class="contact-item">
+                <div class="contact-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-label">Email</div>
+                    <div class="contact-value">info@luxurytravels.com</div>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">
+                    <i class="fas fa-phone-alt"></i>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-label">Phone</div>
+                    <div class="contact-value">+1 (800) 555-1234</div>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-label">Address</div>
+                    <div class="contact-value">123 Luxury Avenue, New York, NY 10001</div>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-label">Website</div>
+                    <div class="contact-value">www.luxurytravels.com</div>
+                </div>
+            </div>
+            <div class="mt-3">
+                <div class="social-media-icons">
+                    <a href="#" class="btn btn-outline-primary rounded-circle social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-primary rounded-circle social-icon">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-primary rounded-circle social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-primary rounded-circle social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // Initialize any interactive elements
+            const actionButtons = document.querySelectorAll('.action-btn');
+            actionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Add interaction effects or functionality
+                    this.classList.add('active');
+                    setTimeout(() => {
+                        this.classList.remove('active');
+                    }, 200);
+                });
+            });
+        });
+    </script>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav d-flex justify-content-between align-items-center">
+        <a href="index.html" class="nav-item nav-link">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="tour-package-list.html" class="nav-item nav-link">
+            <i class="fas fa-map-marked-alt"></i>
+            <span>Tours</span>
+        </a>
+        <a href="#" class="nav-item nav-link">
+            <i class="fas fa-search"></i>
+            <span>Search</span>
+        </a>
+        <a href="favorites.html" class="nav-item nav-link">
+            <i class="fas fa-heart"></i>
+            <span>Favorites</span>
+        </a>
+        <a href="profile.html" class="nav-item nav-link">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+</body>
+</html>
