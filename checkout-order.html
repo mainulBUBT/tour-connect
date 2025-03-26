@@ -24,10 +24,77 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
-            padding-bottom: 80px; /* Increased space for bottom navigation */
+            padding-bottom: 20px; /* Reduced space since bottom navigation is removed */
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
             background-color: #f8f9fa;
+        }
+        
+        /* Success Animation Styles */
+        .success-animation {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+        }
+        
+        .checkmark-circle {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            display: inline-block;
+            vertical-align: top;
+            background-color: #78c2ad;
+            border-radius: 50%;
+        }
+        
+        .checkmark {
+            border-radius: 5px;
+        }
+        
+        .checkmark.draw:after {
+            animation-delay: 100ms;
+            animation-duration: 1s;
+            animation-timing-function: ease;
+            animation-name: checkmark;
+            transform: scaleX(-1) rotate(135deg);
+            opacity: 1;
+        }
+        
+        .checkmark:after {
+            opacity: 0;
+            height: 33px;
+            width: 16px;
+            transform-origin: left top;
+            border-right: 5px solid white;
+            border-top: 5px solid white;
+            content: '';
+            left: 28px;
+            top: 45px;
+            position: absolute;
+        }
+        
+        @keyframes checkmark {
+            0% {
+                height: 0;
+                width: 0;
+                opacity: 1;
+            }
+            20% {
+                height: 0;
+                width: 16px;
+                opacity: 1;
+            }
+            40% {
+                height: 33px;
+                width: 16px;
+                opacity: 1;
+            }
+            100% {
+                height: 33px;
+                width: 16px;
+                opacity: 1;
+            }
         }
         
         /* Mobile App-like Header */
@@ -234,6 +301,23 @@
             letter-spacing: 0.5px;
         }
         
+        /* Sticky bottom button container */
+        .sticky-bottom-btn-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            padding: 15px;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        /* Add padding to the bottom of the page to prevent content from being hidden behind the sticky button */
+        .sticky-bottom-padding {
+            height: 80px;
+        }
+        
         /* Responsive adjustments */
         @media (max-width: 576px) {
             .checkout-section {
@@ -369,132 +453,131 @@
                 <i class="fas fa-credit-card"></i> Payment Method
             </h3>
             
-            <!-- Credit Card Option -->
+            <!-- bKash Option -->
             <div class="payment-method-option selected" onclick="selectPaymentMethod(this)">
                 <div class="d-flex align-items-center">
                     <div class="payment-method-icon">
-                        <i class="far fa-credit-card"></i>
+                        <i class="fas fa-mobile-alt"></i>
                     </div>
                     <div>
-                        <h5 class="payment-method-title">Credit/Debit Card</h5>
-                        <p class="payment-method-description">Pay securely with your card</p>
+                        <h5 class="payment-method-title">bKash</h5>
+                        <p class="payment-method-description">Pay with your bKash account</p>
                     </div>
                     <div class="ms-auto">
-                        <input type="radio" name="paymentMethod" value="card" class="form-check-input" checked>
+                        <input type="radio" name="paymentMethod" value="bkash" class="form-check-input" checked>
                     </div>
                 </div>
                 
-                <!-- Credit Card Form -->
-                <div class="credit-card-form mt-3">
+                <!-- bKash Form -->
+                <div class="mobile-payment-form mt-3">
                     <div class="row g-3">
                         <div class="col-12">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="cardNumber" placeholder="Card Number">
-                                <label for="cardNumber">Card Number</label>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY">
-                                <label for="expiryDate">Expiry Date (MM/YY)</label>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" id="cvv" placeholder="CVV">
-                                <label for="cvv">CVV</label>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" id="cardName" placeholder="Name on Card">
-                                <label for="cardName">Name on Card</label>
+                                <input type="tel" class="form-control" id="bkashNumber" placeholder="bKash Number">
+                                <label for="bkashNumber">bKash Number</label>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- PayPal Option -->
+            <!-- SSLCommerz Option -->
             <div class="payment-method-option" onclick="selectPaymentMethod(this)">
                 <div class="d-flex align-items-center">
                     <div class="payment-method-icon">
-                        <i class="fab fa-paypal"></i>
+                        <i class="fas fa-credit-card"></i>
                     </div>
                     <div>
-                        <h5 class="payment-method-title">PayPal</h5>
-                        <p class="payment-method-description">Pay with your PayPal account</p>
+                        <h5 class="payment-method-title">SSLCommerz</h5>
+                        <p class="payment-method-description">Pay with credit/debit card or internet banking</p>
                     </div>
                     <div class="ms-auto">
-                        <input type="radio" name="paymentMethod" value="paypal" class="form-check-input">
+                        <input type="radio" name="paymentMethod" value="sslcommerz" class="form-check-input">
                     </div>
                 </div>
             </div>
             
-            <!-- Apple Pay Option -->
+            <!-- Nagad Option -->
             <div class="payment-method-option" onclick="selectPaymentMethod(this)">
                 <div class="d-flex align-items-center">
                     <div class="payment-method-icon">
-                        <i class="fab fa-apple-pay"></i>
+                        <i class="fas fa-wallet"></i>
                     </div>
                     <div>
-                        <h5 class="payment-method-title">Apple Pay</h5>
-                        <p class="payment-method-description">Quick and secure payment</p>
+                        <h5 class="payment-method-title">Nagad</h5>
+                        <p class="payment-method-description">Pay with your Nagad account</p>
                     </div>
                     <div class="ms-auto">
-                        <input type="radio" name="paymentMethod" value="applepay" class="form-check-input">
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Google Pay Option -->
-            <div class="payment-method-option" onclick="selectPaymentMethod(this)">
-                <div class="d-flex align-items-center">
-                    <div class="payment-method-icon">
-                        <i class="fab fa-google-pay"></i>
-                    </div>
-                    <div>
-                        <h5 class="payment-method-title">Google Pay</h5>
-                        <p class="payment-method-description">Fast and convenient payment</p>
-                    </div>
-                    <div class="ms-auto">
-                        <input type="radio" name="paymentMethod" value="googlepay" class="form-check-input">
+                        <input type="radio" name="paymentMethod" value="nagad" class="form-check-input">
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- Complete Booking Button -->
-        <div class="mb-5">
-            <button class="btn btn-primary w-100 checkout-btn shadow-sm">
+    </div>
+    
+    <!-- Padding to prevent content from being hidden behind the sticky button -->
+    <div class="sticky-bottom-padding"></div>
+    
+    <!-- Sticky Complete Booking Button -->
+    <div class="sticky-bottom-btn-container">
+        <div class="container">
+            <button class="btn btn-primary w-100 checkout-btn shadow-sm" id="completeBookingBtn">
                 <i class="fas fa-lock me-2"></i> Complete Booking
             </button>
         </div>
     </div>
     
-    <!-- Mobile Bottom Navigation -->
-    <nav class="mobile-bottom-nav d-flex justify-content-between align-items-center">
-        <a href="index.html" class="nav-item nav-link">
-            <i class="fas fa-home"></i>
-            <span>Home</span>
-        </a>
-        <a href="tour-package-list.html" class="nav-item nav-link">
-            <i class="fas fa-map-marked-alt"></i>
-            <span>Tours</span>
-        </a>
-        <a href="#" class="nav-item nav-link">
-            <i class="fas fa-search"></i>
-            <span>Search</span>
-        </a>
-        <a href="favorites.html" class="nav-item nav-link">
-            <i class="fas fa-heart"></i>
-            <span>Favorites</span>
-        </a>
-        <a href="profile.html" class="nav-item nav-link">
-            <i class="fas fa-user"></i>
-            <span>Profile</span>
-        </a>
-    </nav>
+    <!-- Booking Confirmation Modal -->
+    <div class="modal fade" id="bookingConfirmationModal" tabindex="-1" aria-labelledby="bookingConfirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 20px; overflow: hidden;">
+                <div class="modal-body text-center p-4">
+                    <!-- Success Animation -->
+                    <div class="success-animation mb-4">
+                        <div class="checkmark-circle">
+                            <div class="checkmark draw"></div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="modal-title mb-3" id="bookingConfirmationModalLabel">Booking Confirmed!</h4>
+                    <p class="text-muted mb-4">Your tour package has been successfully booked. You will receive a confirmation email shortly.</p>
+                    
+                    <!-- Booking Details -->
+                    <div class="booking-details text-start p-3 mb-4" style="background-color: #f8f9fa; border-radius: 12px;">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Booking ID:</span>
+                            <span class="fw-bold">TC-2023-8745</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Package:</span>
+                            <span class="fw-bold">Maldives Paradise Escape</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Date:</span>
+                            <span class="fw-bold">Nov 15, 2023</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Total Amount:</span>
+                            <span class="fw-bold">$3,997.90</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-primary py-3" style="border-radius: 12px;" onclick="window.location.href='my_tours.html'">
+                            <i class="fas fa-ticket-alt me-2"></i> View My Bookings
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary py-3" style="border-radius: 12px;" data-bs-dismiss="modal">
+                            <i class="fas fa-home me-2"></i> Back to Home
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Bottom Navigation Removed -->
     
     <script>
         // Function to select payment method
@@ -509,6 +592,36 @@
             element.classList.add('selected');
             element.querySelector('input[type="radio"]').checked = true;
         }
+        
+        // Function to handle complete booking button click
+        document.addEventListener('DOMContentLoaded', function() {
+            const completeBookingBtn = document.getElementById('completeBookingBtn');
+            const bookingConfirmationModal = new bootstrap.Modal(document.getElementById('bookingConfirmationModal'));
+            
+            completeBookingBtn.addEventListener('click', function() {
+                // Here you would typically add form validation and API call to process the booking
+                // For demo purposes, we're just showing the confirmation modal
+                
+                // Show loading state on button
+                completeBookingBtn.disabled = true;
+                completeBookingBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Processing...';
+                
+                // Simulate API call with timeout
+                setTimeout(function() {
+                    // Reset button state
+                    completeBookingBtn.disabled = false;
+                    completeBookingBtn.innerHTML = '<i class="fas fa-lock me-2"></i> Complete Booking';
+                    
+                    // Show confirmation modal
+                    bookingConfirmationModal.show();
+                }, 1500);
+            });
+            
+            // Handle modal dismiss to home button
+            document.querySelector('#bookingConfirmationModal [data-bs-dismiss="modal"]').addEventListener('click', function() {
+                window.location.href = 'index.html';
+            });
+        });
     </script>
 </body>
 </html>
