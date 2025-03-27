@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#003554">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -18,8 +18,31 @@
     <link href="css/mobile-app.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Hammer.js for touch gestures -->
+    <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
     <style>
         /* Auth Page Specific Styles */
+        @keyframes ripple {
+            0% {
+                transform: scale(0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        .ripple {
+            position: absolute;
+            background: var(--primary);
+            border-radius: 50%;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            transform-origin: center;
+            animation: ripple 1s ease-out forwards;
+        }
         .auth-container {
             min-height: calc(100vh - 150px);
             display: flex;
@@ -35,6 +58,7 @@
             border: none;
             max-width: 450px;
             margin: 0 auto;
+            -webkit-tap-highlight-color: transparent;
         }
         
         .auth-header {
@@ -65,6 +89,8 @@
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
         
         .auth-tab.active {
@@ -72,6 +98,15 @@
         }
         
         .auth-tab.active::after {
+            animation: slideIn 0.3s ease-out forwards;
+        }
+        
+        @keyframes slideIn {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
+        }
+        
+        .auth-tab::after {
             content: '';
             position: absolute;
             bottom: -1px;
@@ -91,6 +126,15 @@
         }
         
         .auth-form.active {
+            animation: slideUp 0.3s ease-out forwards;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .auth-form {
             display: block;
             animation: fadeIn 0.5s ease;
         }
@@ -125,12 +169,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 10px;
-            border-radius: 10px;
+            padding: 12px;
+            border-radius: 15px;
             background-color: #f8f9fa;
             border: 1px solid #eee;
             color: #333;
             transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
         
         .social-btn:hover {
@@ -229,11 +275,13 @@
         .account-type-option {
             flex: 1;
             border: 2px solid #eee;
-            border-radius: 10px;
+            border-radius: 15px;
             padding: 15px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
         
         .account-type-option.active {
@@ -259,8 +307,58 @@
             animation: fadeIn 0.5s ease;
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching functionality
+            const loginTab = document.getElementById('loginTab');
+            const registerTab = document.getElementById('registerTab');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+
+            function switchTab(activeTab, inactiveTab, showForm, hideForm) {
+                activeTab.classList.add('active');
+                inactiveTab.classList.remove('active');
+                showForm.classList.add('active');
+                hideForm.classList.remove('active');
+
+                // Add touch ripple effect
+                const ripple = document.createElement('div');
+                ripple.classList.add('ripple');
+                activeTab.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 1000);
+            }
+
+            loginTab.addEventListener('click', () => {
+                switchTab(loginTab, registerTab, loginForm, registerForm);
+            });
+
+            registerTab.addEventListener('click', () => {
+                switchTab(registerTab, loginTab, registerForm, loginForm);
+            });
+
+            // Account type selection
+            const accountTypes = document.querySelectorAll('.account-type-option');
+            accountTypes.forEach(option => {
+                option.addEventListener('click', function() {
+                    accountTypes.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Add active state to buttons on touch
+            const buttons = document.querySelectorAll('button, .auth-tab, .account-type-option');
+            buttons.forEach(button => {
+                button.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.98)';
+                });
+                button.addEventListener('touchend', function() {
+                    this.style.transform = '';
+                });
+            });
+        });
+    </script>
 </head>
-<body class="bg-light" style="padding-bottom: 70px;">
+<body class="bg-light" style="padding-bottom: 70px; touch-action: manipulation;">
     <!-- Mobile App-like Header -->
     <header class="app-header">
         <div class="container">

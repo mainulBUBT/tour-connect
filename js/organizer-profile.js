@@ -1,28 +1,50 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Get the organizer name from URL parameter
+    // Get the organizer name from URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const organizerName = urlParams.get('name');
     
     if (organizerName) {
-        // Update page title with organizer name
+        // Update the page title
         document.title = organizerName + ' - TourConnect';
         
-        // Update organizer name in the profile
+        // Update the organizer name in the header
         const profileNameElement = document.querySelector('.organizer-profile-name');
         if (profileNameElement) {
             profileNameElement.textContent = organizerName;
         }
         
-        // Update header title
-        const headerTitle = document.querySelector('.app-logo-text');
-        if (headerTitle) {
-            headerTitle.textContent = organizerName;
+        // Update the organizer name in the page title
+        const pageTitleElement = document.querySelector('.app-logo-text');
+        if (pageTitleElement) {
+            pageTitleElement.textContent = organizerName;
         }
         
-        // You could add more dynamic content updates here based on the organizer name
-        // For example, loading different images, descriptions, tours, etc.
-        
-        // This is a simplified version - in a real application, you would likely
-        // fetch the organizer data from a database or API based on the name parameter
+        // Update the image alt text
+        const profileImageElement = document.querySelector('.organizer-profile-avatar');
+        if (profileImageElement) {
+            profileImageElement.alt = organizerName;
+        }
     }
+    
+    // Add smooth scrolling for anchor links (keeping existing functionality)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+    
+    // Initialize any interactive elements (keeping existing functionality)
+    const actionButtons = document.querySelectorAll('.action-btn');
+    actionButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Add interaction effects or functionality
+            this.classList.add('active');
+            setTimeout(() => {
+                this.classList.remove('active');
+            }, 200);
+        });
+    });
 });
