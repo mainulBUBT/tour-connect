@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#003554">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TourConnect">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
+    <title>Search Tours - TourConnect</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/colors.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/mobile-app.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- PWA Support -->
+    <script src="js/pwa.js" defer></script>
+    <style>
+        body {
+            padding-bottom: 70px; /* Space for bottom navigation */
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+        
+        /* Search Page Specific Styles */
+        .search-container {
+            padding: 15px;
+        }
+        
+        .search-header {
+            margin-bottom: 20px;
+        }
+        
+        .search-input-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border-radius: 12px;
+            border: 1px solid rgba(0,0,0,0.1);
+            background-color: #f8f9fa;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+        
+        .search-clear {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: none;
+        }
+        
+        .search-filters {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .search-filters::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Edge */
+        }
+        
+        .filter-chip {
+            padding: 8px 15px;
+            border-radius: 20px;
+            background-color: #f0f0f0;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            white-space: nowrap;
+            border: none;
+            transition: all 0.2s ease;
+        }
+        
+        .filter-chip:active {
+            transform: scale(0.95);
+        }
+        
+        .filter-chip.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .recent-searches {
+            margin-bottom: 25px;
+        }
+        
+        .recent-search-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .recent-search-icon {
+            color: var(--text-muted);
+            margin-right: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .recent-search-text {
+            flex-grow: 1;
+            font-size: 0.95rem;
+        }
+        
+        .recent-search-remove {
+            color: var(--text-muted);
+            background: none;
+            border: none;
+            padding: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .search-results {
+            margin-top: 20px;
+        }
+        
+        .search-result-count {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 30px 0;
+        }
+        
+        .no-results i {
+            font-size: 3rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+        
+        .no-results h3 {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+        
+        .no-results p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        /* Pagination */
+        .pagination {
+            gap: 5px;
+            margin-top: 20px;
+        }
+        
+        .page-link {
+            border-radius: 8px;
+            border: 1px solid rgba(0,0,0,0.1);
+            color: var(--text-dark);
+            padding: 8px 12px;
+            min-width: 36px;
+            text-align: center;
+        }
+        
+        .page-link:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary-light);
+        }
+        
+        .page-item.active .page-link {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .page-item.disabled .page-link {
+            background-color: #f8f9fa;
+            color: var(--text-muted);
+        }
+        
+        /* Add to favorites button */
+        .add-favorite {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            color: var(--primary);
+            font-size: 1.2rem;
+            z-index: 10;
+            transition: all 0.2s ease;
+        }
+        
+        .add-favorite:active {
+            transform: scale(0.9);
+        }
+        
+        .add-favorite.active {
+            color: var(--danger);
+        }
+        
+        /* Card price overlay */
+        .card-price-overlay {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #ffffff;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 2;
+            letter-spacing: 0.25px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile App-like Header -->
+    <header class="app-header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="index.html" class="header-icon-btn">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <h1 class="app-logo-text mb-0">Search Tours</h1>
+                <div class="app-header-icons">
+                    <a href="notifications.html" class="header-icon-btn">
+                        <i class="fas fa-bell"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container search-container">
+        <!-- Search Input -->
+        <div class="search-input-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-input" id="searchInput" placeholder="Search tours, destinations, activities...">
+            <button class="search-clear" id="searchClear">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Search Filters -->
+        <div class="search-filters">
+            <button class="filter-chip active">All</button>
+            <button class="filter-chip">Tours</button>
+            <button class="filter-chip">Destinations</button>
+            <button class="filter-chip">Activities</button>
+            <button class="filter-chip">Adventure</button>
+            <button class="filter-chip">Cultural</button>
+            <button class="filter-chip">Food</button>
+            <button class="filter-chip">Nature</button>
+        </div>
+
+        <!-- Trending Searches section removed as requested -->
+
+
+        <!-- Search Results -->
+        <div class="search-results" id="searchResults">
+            <div class="search-result-count">24 results found</div>
+            
+            <!-- Tour Cards Row -->
+            <div class="row g-4">
+                <!-- Package Card 1 -->
+                <div class="col-6 col-md-6 col-lg-3">
+                    <div class="card h-100">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1602002418082-a4443e081dd1" class="card-img-top" alt="Maldives Beach Resort">
+                            <div class="card-price-overlay">$1,999</div>
+                            <button class="add-favorite" data-id="pkg1">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="card-body d-flex flex-column py-2">
+                            <h5 class="card-title mb-1"><a href="tour-package-list.html">Maldives Paradise Escape</a></h5>
+                            <!-- Date and Users in one row with justify-content-between -->
+                            <div class="d-flex flex-wrap mb-1 justify-content-between">
+                                <span class="card-info-icon"><i class="far fa-calendar"></i>Aug 15-20</span>
+                                <span class="card-info-icon"><i class="fas fa-users"></i>2-10</span>
+                            </div>
+                            <!-- Place in single row -->
+                            <div class="d-flex flex-wrap mb-1">
+                                <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>Maldives</span>
+                            </div>
+
+                            <!-- Organizer at the bottom -->
+                            <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-building me-2 text-primary"></i>
+                                    <span><a href="organizer-profile.html">Luxury</a></span>
+                                </div>
+                            </div>
+                            <a href="tour-package-list.html" class="btn btn-primary card-btn-full mt-auto text-center">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Package Card 2 -->
+                <div class="col-6 col-md-6 col-lg-3">
+                    <div class="card h-100">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1491555103944-7c647fd857e6" class="card-img-top" alt="Swiss Alps">
+                            <div class="card-price-overlay">$2,499</div>
+                            <button class="add-favorite" data-id="pkg2">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="card-body d-flex flex-column py-2">
+                            <h5 class="card-title mb-1"><a href="tour-package-list.html">Swiss Alps Adventure</a></h5>
+                            <!-- Date and Users in one row with justify-content-between -->
+                            <div class="d-flex flex-wrap mb-1 justify-content-between">
+                                <span class="card-info-icon"><i class="far fa-calendar"></i>Sep 1-7</span>
+                                <span class="card-info-icon"><i class="fas fa-users"></i>4-8</span>
+                            </div>
+                            <!-- Place in single row -->
+                            <div class="d-flex flex-wrap mb-1">
+                                <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>Switzerland</span>
+                            </div>
+
+                            <!-- Organizer at the bottom -->
+                            <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-building me-2 text-primary"></i>
+                                    <span><a href="organizer-profile.html">Alpine</a></span>
+                                </div>
+                            </div>
+                            <a href="tour-package-list.html" class="btn btn-primary card-btn-full mt-auto text-center">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Package Card 3 -->
+                <div class="col-6 col-md-6 col-lg-3">
+                    <div class="card h-100">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e" class="card-img-top" alt="Tokyo">
+                            <div class="card-price-overlay">$1,799</div>
+                            <button class="add-favorite" data-id="pkg3">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="card-body d-flex flex-column py-2">
+                            <h5 class="card-title mb-1"><a href="tour-package-list.html">Tokyo Cultural Experience</a></h5>
+                            <!-- Date and Users in one row with justify-content-between -->
+                            <div class="d-flex flex-wrap mb-1 justify-content-between">
+                                <span class="card-info-icon"><i class="far fa-calendar"></i>Oct 5-12</span>
+                                <span class="card-info-icon"><i class="fas fa-users"></i>2-6</span>
+                            </div>
+                            <!-- Place in single row -->
+                            <div class="d-flex flex-wrap mb-1">
+                                <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>Japan</span>
+                            </div>
+
+                            <!-- Organizer at the bottom -->
+                            <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-building me-2 text-primary"></i>
+                                    <span><a href="organizer-profile.html">Asia</a></span>
+                                </div>
+                            </div>
+                            <a href="tour-package-list.html" class="btn btn-primary card-btn-full mt-auto text-center">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Package Card 4 -->
+                <div class="col-6 col-md-6 col-lg-3">
+                    <div class="card h-100">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c" class="card-img-top" alt="Dubai">
+                            <div class="card-price-overlay">$1,599</div>
+                            <button class="add-favorite" data-id="pkg4">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="card-body d-flex flex-column py-2">
+                            <h5 class="card-title mb-1"><a href="tour-package-list.html">Dubai Desert Safari</a></h5>
+                            <!-- Date and Users in one row with justify-content-between -->
+                            <div class="d-flex flex-wrap mb-1 justify-content-between">
+                                <span class="card-info-icon"><i class="far fa-calendar"></i>Nov 1-5</span>
+                                <span class="card-info-icon"><i class="fas fa-users"></i>2-8</span>
+                            </div>
+                            <!-- Place in single row -->
+                            <div class="d-flex flex-wrap mb-1">
+                                <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>UAE</span>
+                            </div>
+
+                            <!-- Organizer at the bottom -->
+                            <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-building me-2 text-primary"></i>
+                                    <span><a href="organizer-profile.html">Desert</a></span>
+                                </div>
+                            </div>
+                            <a href="tour-package-list.html" class="btn btn-primary card-btn-full mt-auto text-center">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Package Card 5 -->
+                <div class="col-6 col-md-6 col-lg-3">
+                    <div class="card h-100">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1519677100203-a0e668c92439" class="card-img-top" alt="Mountain View">
+                            <div class="card-price-overlay">$1,899</div>
+                            <button class="add-favorite" data-id="pkg5">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="card-body d-flex flex-column py-2">
+                            <h5 class="card-title mb-1"><a href="tour-package-list.html">New Zealand Adventure</a></h5>
+                            <!-- Date and Users in one row with justify-content-between -->
+                            <div class="d-flex flex-wrap mb-1 justify-content-between">
+                                <span class="card-info-icon"><i class="far fa-calendar"></i>Dec 10-18</span>
+                                <span class="card-info-icon"><i class="fas fa-users"></i>4-12</span>
+                            </div>
+                            <!-- Place in single row -->
+                            <div class="d-flex flex-wrap mb-1">
+                                <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>New Zealand</span>
+                            </div>
+
+                            <!-- Organizer at the bottom -->
+                            <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-building me-2 text-primary"></i>
+                                    <span><a href="organizer-profile.html">Pacific</a></span>
+                                </div>
+                            </div>
+                            <a href="tour-package-list.html" class="btn btn-primary card-btn-full mt-auto text-center">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Package Card 6 -->
+                <div class="col-6 col-md-6 col-lg-3">
+                    <div class="card h-100">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" class="card-img-top" alt="Summer Beach">
+                            <div class="card-price-overlay">$1,299</div>
+                            <button class="add-favorite" data-id="pkg6">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="card-body d-flex flex-column py-2">
+                            <h5 class="card-title mb-1"><a href="tour-package-list.html">Bali Beach Retreat</a></h5>
+                            <!-- Date and Users in one row with justify-content-between -->
+                            <div class="d-flex flex-wrap mb-1 justify-content-between">
+                                <span class="card-info-icon"><i class="far fa-calendar"></i>Jan 5-12</span>
+                                <span class="card-info-icon"><i class="fas fa-users"></i>2-10</span>
+                            </div>
+                            <!-- Place in single row -->
+                            <div class="d-flex flex-wrap mb-1">
+                                <span class="card-info-icon"><i class="fas fa-map-marker-alt"></i>Bali, Indonesia</span>
+                            </div>
+
+                            <!-- Organizer at the bottom -->
+                            <div class="card-organizer bg-light p-2 rounded mb-2 mt-1">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-building me-2 text-primary"></i>
+                                    <span><a href="organizer-profile.html">Island</a></span>
+                                </div>
+                            </div>
+                            <a href="tour-package-list.html" class="btn btn-primary card-btn-full mt-auto text-center">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pagination -->
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        
+        <!-- No Results State (Hidden by default) -->
+        <div class="no-results" id="noResults" style="display: none;">
+            <i class="fas fa-search"></i>
+            <h3>No results found</h3>
+            <p>Try adjusting your search or filters to find what you're looking for.</p>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav d-flex justify-content-between align-items-center">
+        <a href="index.html" class="nav-item nav-link">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="tour-package-list.html" class="nav-item nav-link">
+            <i class="fas fa-map-marked-alt"></i>
+            <span>Tours</span>
+        </a>
+        <a href="search.html" class="nav-item nav-link active">
+            <i class="fas fa-search"></i>
+            <span>Search</span>
+        </a>
+        <a href="favorites.html" class="nav-item nav-link">
+            <i class="fas fa-heart"></i>
+            <span>Favorites</span>
+        </a>
+        <a href="profile.html" class="nav-item nav-link">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Inline Search Functionality -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // DOM Elements
+        const searchInput = document.getElementById('searchInput');
+        const searchClear = document.getElementById('searchClear');
+        const filterChips = document.querySelectorAll('.filter-chip');
+        const recentSearchesContainer = document.getElementById('recentSearches');
+        const searchResults = document.getElementById('searchResults');
+        const noResults = document.getElementById('noResults');
+        const recentSearchRemoveBtns = document.querySelectorAll('.recent-search-remove');
+        
+        // Trending searches data
+        const trendingSearches = [
+            "Beach tours in Bali",
+            "Mountain hiking",
+            "Food tours in Italy",
+            "Safari adventures",
+            "European city tours"
+        ];
+        
+        // Show trending searches when search input is focused
+        searchInput.addEventListener('focus', function() {
+            if (recentSearchesContainer) {
+                recentSearchesContainer.style.display = 'block';
+            }
+        });
+        
+        // Show trending searches when user starts typing
+        searchInput.addEventListener('input', function() {
+            searchClear.style.display = this.value ? 'block' : 'none';
+            
+            // Show trending searches container when typing
+            if (this.value && recentSearchesContainer) {
+                recentSearchesContainer.style.display = 'block';
+            }
+            
+            // If user types and presses enter, perform search
+            if (event.key === 'Enter' && this.value.trim() !== '') {
+                performSearch(this.value.trim());
+            }
+        });
+        
+        // Hide trending searches when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !recentSearchesContainer.contains(e.target)) {
+                recentSearchesContainer.style.display = 'none';
+            }
+        });
+        
+        // Clear search input
+        searchClear.addEventListener('click', function() {
+            searchInput.value = '';
+            searchClear.style.display = 'none';
+            searchInput.focus();
+        });
+        
+        // Filter chip selection
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                filterChips.forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                
+                // If there's a search term, filter results based on selected category
+                if (searchInput.value.trim() !== '') {
+                    performSearch(searchInput.value.trim());
+                }
+            });
+        });
+        
+        // Add click event to trending search items
+        document.querySelectorAll('.recent-search-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (!e.target.classList.contains('recent-search-remove') && 
+                    !e.target.closest('.recent-search-remove')) {
+                    const searchText = this.querySelector('.recent-search-text').textContent;
+                    searchInput.value = searchText;
+                    searchClear.style.display = 'block';
+                    performSearch(searchText);
+                }
+            });
+        });
+        
+        // Remove trending search items
+        recentSearchRemoveBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const searchItem = this.closest('.recent-search-item');
+                searchItem.remove();
+            });
+        });
+        
+        // Add to favorites functionality
+        const favButtons = document.querySelectorAll('.add-favorite');
+        favButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const icon = this.querySelector('i');
+                if (this.classList.contains('active')) {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                } else {
+                    icon.classList.remove('fas');
+                    icon.classList.add('far');
+                }
+            });
+        });
+        
+        /**
+         * Perform search and update results
+         * @param {string} query - The search query
+         */
+        function performSearch(query) {
+            // Get active filter
+            const activeFilter = document.querySelector('.filter-chip.active').textContent;
+            
+            // In a real app, this would make an API call to get filtered results
+            // For demo purposes, we'll just show/hide the results container
+            if (query.trim() === '') {
+                searchResults.style.display = 'none';
+                noResults.style.display = 'block';
+                return;
+            }
+            
+            // Show search results (in a real app, this would update with actual filtered results)
+            searchResults.style.display = 'block';
+            noResults.style.display = 'none';
+            
+            // Update result count (this would be dynamic in a real app)
+            document.querySelector('.search-result-count').textContent = '24 results found';
+        }
+    });
+    </script>
+</body>
+</html>
